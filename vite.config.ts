@@ -29,7 +29,12 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       AutoImport({
-        imports: [],
+        imports: [{"antd":["Button"]}],
+        eslintrc: {
+          enabled: true,
+          filepath: "./eslintrc-auto-import.json",
+        },
+        dts: "auto-imports.d.ts",
       }),
       WindiCSS(),
       eslint(),

@@ -19,7 +19,12 @@ module.exports = {
     es6: true,
     jquery: true,
   },
-  extends: ["eslint:recommended", "react-app", "plugin:prettier/recommended"],
+  extends: [
+    "eslint:recommended",
+    "react-app",
+    "plugin:prettier/recommended",
+    "./eslintrc-auto-import.json",
+  ],
   rules: {
     "prettier/prettier": "warn",
     "no-unused-vars": "off",
