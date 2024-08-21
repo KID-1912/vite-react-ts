@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   parserOptions: {
-    parser: "@babel/eslint-parser",
+    parser: "@typescript-eslint/parser",
     ecmaVersion: 2019,
     sourceType: "module",
     ecmaFeatures: {
@@ -17,16 +17,16 @@ module.exports = {
     node: true,
     commonjs: true,
     es6: true,
-    jquery: true,
   },
   extends: [
     "eslint:recommended",
-    "react-app",
+    "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
     "./eslintrc-auto-import.json",
   ],
   rules: {
     "prettier/prettier": "warn",
-    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "import/no-anonymous-default-export": "off",
   },
 };

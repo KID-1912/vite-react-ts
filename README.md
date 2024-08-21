@@ -20,12 +20,21 @@
 
 ## Relevant documents
 
-TypeScript.md
+TypeScript.md 加上"!",表示不为null, as关键字
 
 React.md
 
 AntDesign.md
 
+eslint.md：
+
+react-use和ahooks
+
+## Relation
+
+https://github.com/Altech/todoist-clone
+
+https://app.todoist.com/app/today
 
 ## Development Log
 
@@ -36,6 +45,8 @@ AntDesign.md
 ### Ant Design
 
 引入 `antd` 依赖
+
+antd自动导入
 
 ### firebase
 
@@ -52,8 +63,3 @@ AntDesign.md
 5. 一键复制firebase配置，作为nodejs项目的 `src/firebase.ts` 文件
 
 6. 运行项目，设置索引
-
-
-
-
-

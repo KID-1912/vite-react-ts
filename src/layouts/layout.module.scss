@@ -1,0 +1,25 @@
+.layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #fafafa;
+}
+
+.layoutMain {
+  width: 924px;
+  flex: 1;
+  margin: 0 auto;
+  background: #fafafa;
+}
+
+.layoutHeader {
+  height: 44px;
+  background: #db4c3e;
+}
+
+.layoutSider {
+  --ant-layout-sider-bg: transparent;
+  width: 264px;
+  flex-shrink: 0;
+  border-right: 1px solid #f1f1f1;
+}

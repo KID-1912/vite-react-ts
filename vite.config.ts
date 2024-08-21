@@ -29,7 +29,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       AutoImport({
-        imports: [{"antd":["Button"]}],
+        imports: [{ antd: ["Button"] }],
         eslintrc: {
           enabled: true,
           filepath: "./eslintrc-auto-import.json",
@@ -50,7 +50,7 @@ export default defineConfig(({ mode }) => {
       host: true,
       port: 5173,
       proxy: {
-        "/": env.VITE_API_BASE_URL
+        "/": env.VITE_API_BASE_URL,
       },
     },
     build: {

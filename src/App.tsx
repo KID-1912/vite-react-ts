@@ -1,12 +1,10 @@
-
 import { useState } from "react";
-// import { Button } from "antd"
+import LayoutIndex from "@/layouts/index.tsx";
 
 export default function App() {
   return (
-    <>
-      <div>React App</div>
-      <Button type="primary">你好</Button>
-    </>
-);
+    <LayoutIndex>
+      <Button></Button>
+    </LayoutIndex>
+  );
 }

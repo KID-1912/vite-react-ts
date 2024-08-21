@@ -14,11 +14,10 @@ const firebaseConfig = {
   storageBucket: "todolist-react-f22cc.appspot.com",
   messagingSenderId: "133297773374",
   appId: "1:133297773374:web:d2332e9b12d92032af2a6f",
-  measurementId: "G-2DDYHBPV07"
+  measurementId: "G-2DDYHBPV07",
 };
 
 // Initialize Firebase
 export const firebaseApp = initializeApp(firebaseConfig);
 
 export const firebaseAuth = getAuth(firebaseApp);
-
