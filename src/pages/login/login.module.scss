@@ -1,0 +1,16 @@
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  .login-picture {
+    width: 450px;
+    height: 232px;
+    background-size: cover;
+    background-image: url("@/assets/images/picture/login_main_pic.png");
+  }
+
+  .login-title {
+    margin-bottom: 1.2em;
+  }
+}

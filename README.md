@@ -10,8 +10,9 @@
 
 ## Plan Task
 
-- ant-design
-- layout：sidebar + header+main
+- ant-design √
+- layout：sidebar + header+main √
+- signin √ signout
 - todays
 
 ## Firebase
@@ -20,13 +21,13 @@
 
 ## Relevant documents
 
-TypeScript.md 加上"!",表示不为null, as关键字
+TypeScript.md: 加上"!",表示不为null, as关键字，interface type关键字
 
-React.md
+React.md: css modules
 
-AntDesign.md
+AntDesign.md: 官方文档
 
-eslint.md：
+eslint.md:
 
 react-use和ahooks
 
@@ -35,6 +36,8 @@ react-use和ahooks
 https://github.com/Altech/todoist-clone
 
 https://app.todoist.com/app/today
+
+https://ant-design.antgroup.com/components/overview-cn/
 
 ## Development Log
 
@@ -47,6 +50,18 @@ https://app.todoist.com/app/today
 引入 `antd` 依赖
 
 antd自动导入
+
+### 登录功能
+
+pages/login/login.tsx：一些基础组件使用，ts 类型声明
+
+firebase.tsx
+
+### layouts
+
+layouts/layouts.tsx
+
+### react-router
 
 ### firebase
 

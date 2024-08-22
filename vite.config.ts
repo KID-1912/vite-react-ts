@@ -1,4 +1,4 @@
-import path from "node:path";
+import path from "path";
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import WindiCSS from "vite-plugin-windicss";
@@ -29,7 +29,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       AutoImport({
-        imports: [{ antd: ["Button"] }],
+        imports: [{ antd: ["Button", "Form", "Input", "Flex", "message"] }],
         eslintrc: {
           enabled: true,
           filepath: "./eslintrc-auto-import.json",

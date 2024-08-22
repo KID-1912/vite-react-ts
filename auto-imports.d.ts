@@ -6,4 +6,9 @@
 export {}
 declare global {
   const Button: typeof import('antd')['Button']
+  const Flex: typeof import('antd')['Flex']
+  const Form: typeof import('antd')['Form']
+  const Input: typeof import('antd')['Input']
+  const Message: typeof import('antd')['Message']
+  const message: typeof import('antd')['message']
 }

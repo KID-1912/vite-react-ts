@@ -27,6 +27,7 @@ module.exports = {
   rules: {
     "prettier/prettier": "warn",
     "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-explicit-any": "off",
     "import/no-anonymous-default-export": "off",
   },
 };

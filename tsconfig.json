@@ -1,18 +1,27 @@
 {
   "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "skipLibCheck": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "target": "ESNext",
+    "types": ["vite/client"],
     "allowImportingTsExtensions": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "react-jsx",
     "noEmit": true,
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["src/*"]
     },
-    "skipLibCheck": true,
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
-    "types": ["vite/client"],
+    "useDefineForClassFields": true,
+    "allowJs": false,
+    "strict": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
     "plugins": [{ "name": "typescript-plugin-css-modules" }]
   },
   "include": ["./src", "auto-imports.d.ts"],

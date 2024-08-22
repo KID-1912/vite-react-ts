@@ -5,19 +5,19 @@
   background: #fafafa;
 }
 
-.layoutMain {
+.layout-header {
+  height: 44px;
+  background: #db4c3e;
+}
+
+.layout-main {
   width: 924px;
   flex: 1;
   margin: 0 auto;
   background: #fafafa;
 }
 
-.layoutHeader {
-  height: 44px;
-  background: #db4c3e;
-}
-
-.layoutSider {
+.layout-sider {
   --ant-layout-sider-bg: transparent;
   width: 264px;
   flex-shrink: 0;
