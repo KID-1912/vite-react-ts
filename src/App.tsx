@@ -1,11 +1,5 @@
-import { useState } from "react";
-import LayoutIndex from "@/layouts/layout.tsx";
-import Login from "@/pages/login/login.tsx";
+import Router from "@/router/index.tsx";
 
 export default function App() {
-  return (
-    // <LayoutIndex>
-    // </LayoutIndex>
-    <Login />
-  );
+  return <Router></Router>;
 }

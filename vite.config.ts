@@ -29,7 +29,12 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       AutoImport({
-        imports: [{ antd: ["Button", "Form", "Input", "Flex", "message"] }],
+        imports: [
+          "react",
+          "react-router-dom",
+          { react: ["Suspense"] },
+          { antd: ["Button", "Form", "Input", "Flex", "message"] },
+        ],
         eslintrc: {
           enabled: true,
           filepath: "./eslintrc-auto-import.json",

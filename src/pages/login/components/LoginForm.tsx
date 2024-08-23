@@ -1,6 +1,5 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { firebaseAuth } from "@/firebase.ts";
-import { useState } from "react";
 
 interface LoginFieldType {
   email: string;
@@ -10,6 +9,7 @@ interface LoginFieldType {
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
+  const navigate = useNavigate();
   const initialLoginValues: LoginFieldType = {
     email: "example@example.com",
     password: "testtest",
@@ -20,6 +20,7 @@ export default function LoginForm() {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(firebaseAuth, email, password);
+      navigate("/");
       messageApi.error("登录成功");
     } catch (error) {
       messageApi.error("登录失败");
