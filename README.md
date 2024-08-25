@@ -29,6 +29,8 @@ AntDesign.md: 官方文档
 
 eslint.md:
 
+vite.md:vite中unplugin中react,vue不同，以及icon自动引入
+
 react-use和ahooks
 
 ## Relation
@@ -66,6 +68,11 @@ layouts/layouts.tsx
 router/index.tsx
 
 ### 任务模块、添加基础代办
+
+AddTaskItem、TaskItem
+
+useTasks、api/task.js 新增任务，查询任务
+
 
 ### firebase
 

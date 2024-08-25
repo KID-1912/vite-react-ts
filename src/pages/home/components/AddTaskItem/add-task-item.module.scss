@@ -1,0 +1,23 @@
+.add-task-item {
+  display: flex;
+  align-items: center;
+  color: #808080;
+  cursor: pointer;
+  &:hover {
+    color: #dc4c3e;
+  }
+  .plus-outline {
+    display: inline;
+  }
+  .plus-circle-filled {
+    display: none;
+  }
+  &:hover {
+    .plus-outline {
+      display: none;
+    }
+    .plus-circle-filled {
+      display: inline;
+    }
+  }
+}

@@ -5,6 +5,8 @@ import WindiCSS from "vite-plugin-windicss";
 import eslint from "vite-plugin-eslint";
 import legacy from "vite-plugin-legacy-swc";
 import AutoImport from "unplugin-auto-import/vite";
+import Icons from "unplugin-icons/vite";
+import IconsResolver from "unplugin-icons/resolver";
 import { createHtmlPlugin } from "vite-plugin-html";
 import { visualizer } from "rollup-plugin-visualizer";
 
@@ -35,12 +37,21 @@ export default defineConfig(({ mode }) => {
           { react: ["Suspense"] },
           { antd: ["Button", "Form", "Input", "Flex", "message"] },
         ],
+        resolvers: [
+          IconsResolver({
+            prefix: false,
+            enabledCollections: ["ant-design"],
+            alias: { antd: "ant-design" },
+            extension: 'jsx',
+          })
+        ],
         eslintrc: {
           enabled: true,
           filepath: "./eslintrc-auto-import.json",
         },
         dts: "auto-imports.d.ts",
       }),
+      Icons({ autoInstall: true, compiler: 'jsx',  }),
       WindiCSS(),
       eslint(),
       legacy(),

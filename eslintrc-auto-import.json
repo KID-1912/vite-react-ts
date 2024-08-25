@@ -44,6 +44,10 @@
     "useParams": true,
     "useResolvedPath": true,
     "useRoutes": true,
-    "useSearchParams": true
+    "useSearchParams": true,
+    "AntdPlusOutlined": true,
+    "IconAntDesignPlusOutlined": true,
+    "AntdCircleFilled": true,
+    "AntdPlusCircleFilled": true
   }
 }
