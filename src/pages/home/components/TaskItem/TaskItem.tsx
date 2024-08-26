@@ -1,5 +1,3 @@
-import type { Task } from "@/types/index.d.ts";
-
 type Props = {
   task: Task;
 };

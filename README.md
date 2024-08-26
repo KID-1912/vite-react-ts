@@ -13,7 +13,7 @@
 - ant-design √
 - layout：sidebar + header+main √
 - signin √ signout
-- todays
+- inbox
 
 ## Firebase
 
@@ -21,9 +21,9 @@
 
 ## Relevant documents
 
-TypeScript.md: 加上"!",表示不为null, as关键字，interface type关键字
+TypeScript.md:
 
-React.md: css modules
+React.md: css modules,hooks,context
 
 AntDesign.md: 官方文档
 
@@ -73,6 +73,20 @@ AddTaskItem、TaskItem
 
 useTasks、api/task.js 新增任务，查询任务
 
+编写 firebase db操作，定义taskGroup类型，helper函数collection
+
+context/firestore:db, useAuthUser:context/user:userId
+
+loginForm 登录表单调用firebaseAuth登录，使firebaseAuth的状态改变（包含user信息了）
+
+新增useAuthState，在改变后，设置User状态，这是UserContext的Provider.value更新
+触发了登录页面更新，显示内页了；
+
+至于unsubscribe，表示依赖useAuthState中user的组件，卸载时取消，显示时订阅
+
+我的逻辑：进入页面没有user状态未登录，在登录页，否则直接进入内页
+
+新增AuthGuard依赖UserContext,routes配置中，AuthGuard包裹需要鉴权的路由和组件
 
 ### firebase
 

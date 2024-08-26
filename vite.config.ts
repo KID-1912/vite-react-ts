@@ -34,7 +34,7 @@ export default defineConfig(({ mode }) => {
         imports: [
           "react",
           "react-router-dom",
-          { react: ["Suspense"] },
+          { react: ["Suspense", "createContext"] },
           { antd: ["Button", "Form", "Input", "Flex", "message"] },
         ],
         resolvers: [
@@ -42,8 +42,8 @@ export default defineConfig(({ mode }) => {
             prefix: false,
             enabledCollections: ["ant-design"],
             alias: { antd: "ant-design" },
-            extension: 'jsx',
-          })
+            extension: "jsx",
+          }),
         ],
         eslintrc: {
           enabled: true,
@@ -51,7 +51,7 @@ export default defineConfig(({ mode }) => {
         },
         dts: "auto-imports.d.ts",
       }),
-      Icons({ autoInstall: true, compiler: 'jsx',  }),
+      Icons({ autoInstall: true, compiler: "jsx" }),
       WindiCSS(),
       eslint(),
       legacy(),

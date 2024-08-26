@@ -21,6 +21,7 @@ declare global {
   const Route: typeof import('react-router-dom')['Route']
   const Routes: typeof import('react-router-dom')['Routes']
   const Suspense: typeof import('react')['Suspense']
+  const createContext: typeof import('react')['createContext']
   const createRef: typeof import('react')['createRef']
   const forwardRef: typeof import('react')['forwardRef']
   const lazy: typeof import('react')['lazy']

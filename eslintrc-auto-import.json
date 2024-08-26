@@ -48,6 +48,7 @@
     "AntdPlusOutlined": true,
     "IconAntDesignPlusOutlined": true,
     "AntdCircleFilled": true,
-    "AntdPlusCircleFilled": true
+    "AntdPlusCircleFilled": true,
+    "createContext": true
   }
 }
