@@ -8,6 +8,7 @@ export const useTasks = () => {
       createdAt: new Date(),
       done: false,
       name: "任务实例",
+      description: "任务描述",
       scheduledAt: null,
     },
   ]);

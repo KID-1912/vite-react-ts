@@ -1,3 +1,10 @@
+.add-task-form {
+  color: red;
+}
+
+.form-item {
+  --ant-form-item-margin-bottom: 0px;
+}
 .add-task-item {
   display: flex;
   align-items: center;

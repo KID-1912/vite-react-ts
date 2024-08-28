@@ -5,6 +5,7 @@ interface Task {
   createdAt: Date;
   done: boolean;
   name: string;
+  description: string;
   scheduledAt: Date | null;
 }
 
