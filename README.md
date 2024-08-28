@@ -21,17 +21,15 @@
 
 ## Relevant documents
 
-TypeScript.md:
+TypeScript.md
 
-React.md: css modules,hooks,context
+React.md
 
-AntDesign.md: 官方文档
+AntDesign.md
 
-eslint.md:
+eslint.md
 
-vite.md:vite中unplugin中react,vue不同，以及icon自动引入
-
-react-use和ahooks
+vite.md
 
 ## Relation
 
@@ -69,24 +67,73 @@ router/index.tsx
 
 ### 任务模块、添加基础代办
 
-AddTaskItem、TaskItem
+AddTaskItem、TaskItem 组件
 
-useTasks、api/task.js 新增任务，查询任务
+编写 api/tasks/tasks.ts 任务操作模块（增删改查任务接口实现）
 
-编写 firebase db操作，定义taskGroup类型，helper函数collection
+types/index.d.ts 声明 Task、InboxType、ProjectType、TaskGroup类型
 
-context/firestore:db, useAuthUser:context/user:userId
+添加UserContext(依赖useAuthState)、FirestoreContext
 
-loginForm 登录表单调用firebaseAuth登录，使firebaseAuth的状态改变（包含user信息了）
+### 关于登录实现
 
-新增useAuthState，在改变后，设置User状态，这是UserContext的Provider.value更新
-触发了登录页面更新，显示内页了；
+**原项目**
 
-至于unsubscribe，表示依赖useAuthState中user的组件，卸载时取消，显示时订阅
+1. 在UserContext中使用useAuthState，通过useEffect监听onAuthStateChanged事件回调
 
-我的逻辑：进入页面没有user状态未登录，在登录页，否则直接进入内页
+2. loginForm 组件成功调用firebaseAuth登录，触发回调内setUser
 
-新增AuthGuard依赖UserContext,routes配置中，AuthGuard包裹需要鉴权的路由和组件
+3. user状态存在，UI渲染app内页组件内容
+
+**本项目**
+
+前1、2点一致，第3点由于项目使用router，需新增 AuthGuard专用于鉴权守卫
+
+```tsx
+// @/router/components/AuthGuard
+import { UserContext } from "@/context/user.tsx";
+
+export default function AuthGuard({ children }: { children: React.ReactNode }) {
+  const user = useContext(UserContext);
+  if (!user) return <Navigate to="/login" replace />;
+  return children;
+}
+```
+
+使用：在routes中为内页添加鉴权守卫
+
+```tsx
+// @/router/index.tsx
+
+const LoginRoute: RouteObject = {
+  path: "/login",
+  // login页不需要鉴权
+  element: lazyLoad(lazy(() => import("@/pages/login/login.tsx"))),
+};
+
+// 后台内页需要鉴权
+const adminRoutes: RouteObject = {
+  path: "/",
+  element: (
+    <AuthGuard>
+      <Outlet />
+    </AuthGuard>
+  ),
+  children: [
+    {
+      index: true,
+      element: lazyLoad(lazy(() => import("@/pages/home/home.tsx"))),
+    },
+    // ... permissionRoutes
+  ],
+};
+
+export default function Router() {
+  const routes: RouteObject[] = [adminRoutes, LoginRoute];
+  const router = createHashRouter(routes);
+  return <RouterProvider router={router} />;
+}
+```
 
 ### firebase
 
