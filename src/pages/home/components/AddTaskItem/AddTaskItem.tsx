@@ -1,6 +1,7 @@
 import styles from "./add-task-item.module.scss";
 import { UserContext } from "@/context/user.tsx";
 import { addTaskDoc } from "@/api/tasks/tasks.ts";
+import { InputRef } from "antd/es/input";
 
 type Props = {
   className?: string;
@@ -9,6 +10,12 @@ type Props = {
 function AddTaskForm(props: { className?: string; onCancel: () => void }) {
   const user = useContext(UserContext);
   const { onCancel } = props;
+
+  // 自动聚焦
+  const autofocusRef = useRef<InputRef>(null);
+  useEffect(() => {
+    autofocusRef.current!.focus();
+  }, []);
 
   // 创建任务
   const [loading, setLoading] = useState(false);
@@ -39,7 +46,12 @@ function AddTaskForm(props: { className?: string; onCancel: () => void }) {
       <Form onFinish={handleFinish}>
         <div className="p-6px">
           <Form.Item name="name">
-            <Input placeholder="任务名称" variant="borderless" className="font-bold"></Input>
+            <Input
+              placeholder="任务名称"
+              variant="borderless"
+              ref={autofocusRef}
+              className="font-bold"
+            ></Input>
           </Form.Item>
           <Form.Item name="description">
             <Input placeholder="描述" variant="borderless"></Input>
