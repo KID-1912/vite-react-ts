@@ -38,7 +38,7 @@ export default function LoginForm() {
         onFinish={handleFinish}
       >
         <Form.Item name="email">
-          <Input value="你好" placeholder="输入您的电子邮箱..." className="h-50px"></Input>
+          <Input placeholder="输入您的电子邮箱..." className="h-50px"></Input>
         </Form.Item>
         <Form.Item name="password">
           <Input type="password" placeholder="输入您的密码..." className="h-50px"></Input>

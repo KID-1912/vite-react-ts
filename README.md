@@ -12,7 +12,7 @@
 
 - ant-design √
 - layout：sidebar + header+main √
-- signin √ signout
+- signin √ signout 登录状态持久化
 - inbox
 
 ## Firebase
@@ -55,7 +55,7 @@ antd自动导入
 
 pages/login/login.tsx：一些基础组件使用，ts 类型声明
 
-firebase.tsx
+新增 firebase.tsx
 
 ### layouts
 
@@ -67,7 +67,7 @@ router/index.tsx
 
 ### 任务模块、添加基础代办
 
-AddTaskItem、TaskItem 组件
+AddTaskItem、TaskItem 组件静态实现
 
 编写 api/tasks/tasks.ts 任务操作模块（增删改查任务接口实现）
 
@@ -134,6 +134,12 @@ export default function Router() {
   return <RouterProvider router={router} />;
 }
 ```
+
+### 任务CRUD
+
+AddTaskItem组件 新增任务实现
+
+Inbox收件箱 任务列表
 
 ### firebase
 

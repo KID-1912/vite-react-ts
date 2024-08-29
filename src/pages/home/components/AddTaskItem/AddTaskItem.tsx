@@ -6,56 +6,73 @@ type Props = {
   className?: string;
 };
 
-function AddTaskForm() {
+function AddTaskForm(props: { className?: string; onCancel: () => void }) {
+  const user = useContext(UserContext);
+  const { onCancel } = props;
+
+  // 创建任务
+  const [loading, setLoading] = useState(false);
+  type AddTaskFieldType = Pick<NewTask, "name" | "description">;
+  const handleFinish = async (values: AddTaskFieldType) => {
+    const newTask: NewTask = {
+      __type: "task",
+      userId: user!.uid,
+      done: false,
+      name: values.name,
+      description: values.description,
+    };
+    const taskGroup: InboxType = { __type: "inbox", name: "__inbox__" };
+    try {
+      setLoading(true);
+      await addTaskDoc({ task: newTask, taskGroup, userId: user!.uid });
+      message.success("任务已添加");
+    } catch (error) {
+      console.error(error);
+      message.error("操作失败");
+    }
+    setLoading(false);
+    onCancel();
+  };
+
   return (
-    <div className={styles["add-task-form"]}>
-      <Form>
-        <Form.Item name="name" className="mb-0">
-          {/* variant="borderless" */}
-          <Input placeholder="任务名称"></Input>
-        </Form.Item>
-        <Form.Item name="description" className="mb-0">
-          <Input placeholder="描述"></Input>
-        </Form.Item>
+    <div className={`${styles["add-task-form"]} ${props.className}`}>
+      <Form onFinish={handleFinish}>
+        <div className="p-6px">
+          <Form.Item name="name">
+            <Input placeholder="任务名称" variant="borderless" className="font-bold"></Input>
+          </Form.Item>
+          <Form.Item name="description">
+            <Input placeholder="描述" variant="borderless"></Input>
+          </Form.Item>
+        </div>
         <Form.Item>
-          <Button type="primary" htmlType="submit">
-            添加任务
-          </Button>
+          <div className={styles["footer"]}>
+            <Button type="text" className="mr-6px" disabled={loading} onClick={onCancel}>
+              取消
+            </Button>
+            <Button type="primary" htmlType="submit" loading={loading}>
+              添加任务
+            </Button>
+          </div>
         </Form.Item>
       </Form>
     </div>
   );
 }
 
-export default function AddTaskItem({ className }: Props) {
-  const user = useContext(UserContext);
-  const [task, setTask] = useState<NewTask>({
-    __type: "task",
-    userId: user!.uid,
-    done: false,
-    name: "新增的任务",
-  });
-
-  // 创建任务
-  const handleAddTask = async () => {
-    // try {
-    //   setTask({ ...task });
-    //   const taskGroup: InboxType = { __type: "inbox", name: "__inbox__" };
-    //   await addTaskDoc({ task, taskGroup, userId: user!.uid });
-    //   message.success("任务已添加");
-    // } catch (error) {
-    //   console.error(error);
-    // }
-  };
-
-  return (
-    <>
-      <div className={`${styles["add-task-item"]} ${className}`} onClick={handleAddTask}>
-        <AntdPlusOutlined className={styles["plus-outline"]} />
-        <AntdPlusCircleFilled className={styles["plus-circle-filled"]} />
-        <div className="ml-4px">添加任务</div>
+export default function AddTaskItem(props: Props) {
+  const [isFormMode, setIsFormMode] = useState(false);
+  if (isFormMode) {
+    return <AddTaskForm className={props.className} onCancel={() => setIsFormMode(false)} />;
+  } else {
+    return (
+      <div className={`${styles["add-task-item"]} ${props.className}`}>
+        <AntdPlusOutlined className={styles["icon-plus-outline"]} />
+        <AntdPlusCircleFilled className={styles["icon-plus-circle-filled"]} />
+        <div className="ml-4px" onClick={() => setIsFormMode(true)}>
+          添加任务
+        </div>
       </div>
-      <AddTaskForm />
-    </>
-  );
+    );
+  }
 }
