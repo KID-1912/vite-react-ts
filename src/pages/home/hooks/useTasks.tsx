@@ -1,4 +1,4 @@
-export const useTasks = () => {
+export const useTasks = (taskGroup: TaskGroup) => {
   /* 任务列表 */
   const [taskList, setTaskList] = useState<Task[]>([
     {
@@ -12,6 +12,10 @@ export const useTasks = () => {
       scheduledAt: null,
     },
   ]);
+
+  useEffect(() => {
+    // 获取任务组下列表并更新
+  }, [taskGroup.__type, taskGroup.name]);
 
   return taskList;
 };

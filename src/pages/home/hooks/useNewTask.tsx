@@ -7,7 +7,8 @@ const useNewTask = () => {
     __type: "task",
     userId: user!.uid,
     done: false,
-    name: "新增的任务",
+    name: "新增任务",
+    description: "",
   });
 
   return { task, setTask };
