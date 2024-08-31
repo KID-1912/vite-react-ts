@@ -23,9 +23,7 @@ export default defineConfig(({ mode }) => {
     css: {
       preprocessorOptions: {
         less: {},
-        scss: {
-          additionalData: "",
-        },
+        scss: { additionalData: "" },
       },
     },
     plugins: [

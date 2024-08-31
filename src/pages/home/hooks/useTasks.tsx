@@ -1,20 +1,28 @@
+import { getTaskDocsByGroup } from "@/api/tasks/tasks.ts";
+import { UserContext } from "@/context/user.tsx";
+
 export const useTasks = (taskGroup: TaskGroup) => {
+  const user = useContext(UserContext);
   /* 任务列表 */
-  const [taskList, setTaskList] = useState<Task[]>([
-    {
-      __type: "task",
-      id: "123",
-      userId: "123456",
-      createdAt: new Date(),
-      done: false,
-      name: "任务实例",
-      description: "任务描述",
-      scheduledAt: null,
-    },
-  ]);
+  const [taskList, setTaskList] = useState<Task[]>([]);
 
   useEffect(() => {
-    // 获取任务组下列表并更新
+    let isMounted = true;
+    const getTaskList = async () => {
+      try {
+        const taskList: Task[] = await getTaskDocsByGroup({ taskGroup, userId: user!.uid });
+        if (isMounted === false) return;
+        setTaskList(taskList);
+      } catch (error) {
+        if (isMounted === false) return;
+        console.warn(error);
+        message.error("列表数据失败，请稍后重试");
+      }
+    };
+    getTaskList();
+    return () => {
+      isMounted = false;
+    };
   }, [taskGroup.__type, taskGroup.name]);
 
   return taskList;

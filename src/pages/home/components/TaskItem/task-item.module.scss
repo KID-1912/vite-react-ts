@@ -1,0 +1,42 @@
+.task-item {
+  display: flex;
+  padding: 12px 0 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  .task-checkbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 18px;
+    height: 18px;
+    color: #999;
+    font-size: 12px;
+    border-radius: 50%;
+    border: 1px solid #999;
+    .icon-checked {
+      opacity: 0;
+    }
+    &:hover .icon-checked {
+      opacity: 1;
+      transition: all 0.3s;
+    }
+  }
+  .action-item {
+    padding: 2px;
+    color: #808080;
+    font-size: 20px;
+    border-radius: 2px;
+    opacity: 0;
+    & + .action-item {
+      margin-left: 12px;
+    }
+    &:hover {
+      color: #202020;
+      background-color: #eee;
+    }
+  }
+  &:hover .action-item {
+    opacity: 1;
+    transition: all 0.3s;
+  }
+}

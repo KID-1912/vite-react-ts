@@ -49,6 +49,10 @@
     "IconAntDesignPlusOutlined": true,
     "AntdCircleFilled": true,
     "AntdPlusCircleFilled": true,
-    "createContext": true
+    "createContext": true,
+    "AntdCheckOutlined": true,
+    "AntdEditOutlined": true,
+    "AntDesignDeleteOutlined": true,
+    "AntdDeleteOutlined": true
   }
 }
