@@ -137,11 +137,15 @@ export default function Router() {
 
 ### 任务CRUD
 
-AddTaskItem组件 新增任务实现
+AddTaskItem组件 新增任务实现 √
 
-TaskItem 渲染任务列表
+TaskItem 渲染任务列表 √
 
-Inbox收件箱 任务列表
+Inbox收件箱 任务列表 √
+
+移除任务列表 √
+
+登录状态保持
 
 ### firebase
 

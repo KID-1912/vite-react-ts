@@ -5,11 +5,14 @@ import { InputRef } from "antd/es/input";
 
 type Props = {
   className?: string;
+  onAddTaskSuccess?: () => void | Promise<void>;
 };
 
-function AddTaskForm(props: { className?: string; onCancel: () => void }) {
+function AddTaskForm(
+  props: Pick<Props, "className" | "onAddTaskSuccess"> & { onCancel: () => void },
+) {
   const user = useContext(UserContext);
-  const { onCancel } = props;
+  const { onAddTaskSuccess, onCancel } = props;
 
   // 自动聚焦
   const autofocusRef = useRef<InputRef>(null);
@@ -33,6 +36,7 @@ function AddTaskForm(props: { className?: string; onCancel: () => void }) {
       setLoading(true);
       await addTaskDoc({ task: newTask, taskGroup, userId: user!.uid });
       message.success("任务已添加");
+      onAddTaskSuccess?.();
     } catch (error) {
       console.error(error);
       message.error("操作失败");
@@ -75,7 +79,13 @@ function AddTaskForm(props: { className?: string; onCancel: () => void }) {
 export default function AddTaskItem(props: Props) {
   const [isFormMode, setIsFormMode] = useState(false);
   if (isFormMode) {
-    return <AddTaskForm className={props.className} onCancel={() => setIsFormMode(false)} />;
+    return (
+      <AddTaskForm
+        className={props.className}
+        onAddTaskSuccess={props.onAddTaskSuccess}
+        onCancel={() => setIsFormMode(false)}
+      />
+    );
   } else {
     return (
       <div className={`${styles["add-task-item"]} ${props.className}`}>

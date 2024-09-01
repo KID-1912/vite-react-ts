@@ -1,10 +1,12 @@
 import styles from "./task-item.module.scss";
+import { formatScheduledDate, calcScheduledColor } from "@/utils/index.ts";
 
 type Props = {
   task: Task;
+  onDeleteTask: () => void;
 };
 
-export default function TaskItem({ task }: Props) {
+export default function TaskItem({ task, onDeleteTask }: Props) {
   return (
     <div className={styles["task-item"]}>
       <div className={styles["task-checkbox"]}>
@@ -17,12 +19,20 @@ export default function TaskItem({ task }: Props) {
             <div className={styles["action-item"]}>
               <AntdEditOutlined />
             </div>
-            <div className={styles["action-item"]}>
+            <div className={styles["action-item"]} onClick={onDeleteTask}>
               <AntdDeleteOutlined />
             </div>
           </div>
         </div>
-        <div className="mt-6px text-12px">8月1日</div>
+        {task.scheduledAt && (
+          <div
+            className="flex items-center mt-6px text-12px"
+            style={{ color: calcScheduledColor(task.scheduledAt) }}
+          >
+            <AntdCalendarOutlined className="mr-4px" />
+            {formatScheduledDate(task.scheduledAt)}
+          </div>
+        )}
       </div>
     </div>
   );

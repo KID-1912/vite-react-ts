@@ -6,6 +6,7 @@
 export {}
 declare global {
   const AntDesignDeleteOutlined: typeof import('~icons/ant-design/delete-outlined.jsx')['default']
+  const AntdCalendarOutlined: typeof import('~icons/ant-design/calendar-outlined.jsx')['default']
   const AntdCheckOutlined: typeof import('~icons/ant-design/check-outlined.jsx')['default']
   const AntdCircleFilled: typeof import('~icons/ant-design/circle-filled.jsx')['default']
   const AntdDeleteOutlined: typeof import('~icons/ant-design/delete-outlined.jsx')['default']
@@ -19,6 +20,7 @@ declare global {
   const Input: typeof import('antd')['Input']
   const Link: typeof import('react-router-dom')['Link']
   const Message: typeof import('antd')['Message']
+  const Modal: typeof import('antd')['Modal']
   const NavLink: typeof import('react-router-dom')['NavLink']
   const Navigate: typeof import('react-router-dom')['Navigate']
   const Outlet: typeof import('react-router-dom')['Outlet']

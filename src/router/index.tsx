@@ -1,6 +1,6 @@
 import { createHashRouter, RouterProvider } from "react-router-dom";
 import AuthGuard from "./components/AuthGuard.tsx";
-import { lazyLoad } from "@/utils/index.tsx";
+import { lazyLoad } from "@/utils/index.ts";
 
 import type { RouteObject } from "react-router-dom";
 
