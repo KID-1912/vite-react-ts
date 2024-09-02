@@ -1,10 +1,10 @@
 import { useAuthState } from "@/hooks/useAuthState.ts";
 
-import type { User } from "firebase/auth";
+import type { UserState } from "@/hooks/useAuthState.ts";
 
-export const UserContext = createContext<User | null>(null);
+export const UserContext = createContext<UserState>({ user: null, loading: true });
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-  const user = useAuthState();
-  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
+  const { user, loading } = useAuthState();
+  return <UserContext.Provider value={{ user, loading }}>{children}</UserContext.Provider>;
 };

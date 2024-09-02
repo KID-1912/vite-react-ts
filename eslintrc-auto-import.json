@@ -55,6 +55,7 @@
     "AntDesignDeleteOutlined": true,
     "AntdDeleteOutlined": true,
     "AntdCalendarOutlined": true,
-    "Modal": true
+    "Modal": true,
+    "AntdLoadingOutlined": true
   }
 }

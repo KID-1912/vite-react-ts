@@ -7,6 +7,7 @@ import legacy from "vite-plugin-legacy-swc";
 import AutoImport from "unplugin-auto-import/vite";
 import Icons from "unplugin-icons/vite";
 import IconsResolver from "unplugin-icons/resolver";
+import svgr from "vite-plugin-svgr";
 import { createHtmlPlugin } from "vite-plugin-html";
 import { visualizer } from "rollup-plugin-visualizer";
 
@@ -50,6 +51,7 @@ export default defineConfig(({ mode }) => {
         dts: "auto-imports.d.ts",
       }),
       Icons({ autoInstall: true, compiler: "jsx" }),
+      svgr(),
       WindiCSS(),
       eslint(),
       legacy(),

@@ -17,3 +17,12 @@ svg {
   width: 1em;
   height: 1em;
 }
+
+.rotating {
+  animation: rotating 1s linear infinite;
+  @keyframes rotating {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}

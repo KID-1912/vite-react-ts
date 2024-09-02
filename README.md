@@ -29,7 +29,7 @@ AntDesign.md
 
 eslint.md
 
-vite.md
+vite.md react svg支持
 
 ## Relation
 
@@ -145,7 +145,7 @@ Inbox收件箱 任务列表 √
 
 移除任务列表 √
 
-登录状态保持
+登录状态加载 √ useAuthState.ts 为获取权限事件新增loading，为AuthGuard提供加载状态
 
 ### firebase
 

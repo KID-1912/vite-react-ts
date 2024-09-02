@@ -11,7 +11,7 @@ type Props = {
 function AddTaskForm(
   props: Pick<Props, "className" | "onAddTaskSuccess"> & { onCancel: () => void },
 ) {
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const { onAddTaskSuccess, onCancel } = props;
 
   // 自动聚焦

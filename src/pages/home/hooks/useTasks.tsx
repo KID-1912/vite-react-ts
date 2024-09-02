@@ -2,7 +2,7 @@ import { getTaskDocsByGroup } from "@/api/tasks/tasks.ts";
 import { UserContext } from "@/context/user.tsx";
 
 export const useTasks = (taskGroup: TaskGroup) => {
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
   /* 任务列表 */
   const [taskList, setTaskList] = useState<Task[]>([]);
 

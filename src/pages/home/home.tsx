@@ -8,7 +8,7 @@ import { deleteTaskDoc } from "@/api/tasks/tasks.ts";
 import { useTasks } from "./hooks/useTasks.tsx";
 
 export default function Home() {
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   // taskGroup类别
   const defaultTaskGroup = useRef<TaskGroup>({ __type: "inbox", name: "__inbox__" });
