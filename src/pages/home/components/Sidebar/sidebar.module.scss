@@ -1,6 +1,8 @@
 .sidebar {
+  position: fixed !important;
   --ant-layout-sider-bg: transparent;
   width: 264px;
+  height: 100%;
   flex-shrink: 0;
   border-right: 1px solid #f1f1f1;
 }

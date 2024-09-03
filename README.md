@@ -147,6 +147,12 @@ Inbox收件箱 任务列表 √
 
 登录状态加载 √ useAuthState.ts 为获取权限事件新增loading，为AuthGuard提供加载状态
 
+首页loading Skeleton 加载
+
+截止日期
+
+编辑任务
+
 ### firebase
 
 **google firebase**

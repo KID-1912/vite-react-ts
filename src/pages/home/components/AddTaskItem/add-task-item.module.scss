@@ -1,6 +1,9 @@
 .add-task-form {
   border-radius: 8px;
   border: 1px solid #e6e6e6;
+  &:focus-within {
+    border-color: #b8b8b8;
+  }
   :global(.ant-form-item) {
     --ant-form-item-margin-bottom: 0px;
     :global(.ant-input) {
