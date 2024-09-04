@@ -1,7 +1,9 @@
 import styles from "./add-task-item.module.scss";
 import { UserContext } from "@/context/user.tsx";
 import { addTaskDoc } from "@/api/tasks/tasks.ts";
-import { InputRef } from "antd/es/input";
+import { DatePicker } from "antd";
+import type { InputRef } from "antd/es/input";
+import type { Dayjs } from "dayjs";
 
 type Props = {
   className?: string;
@@ -23,13 +25,17 @@ function AddTaskForm(
   // 创建任务
   const [loading, setLoading] = useState(false);
   type AddTaskFieldType = Pick<NewTask, "name" | "description">;
+  const [scheduledAtDate, setScheduledAtDate] = useState<Dayjs | null>(null);
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState<boolean>(true);
   const handleFinish = async (values: AddTaskFieldType) => {
+    console.log("Received values of form: ", values);
     const newTask: NewTask = {
       __type: "task",
       userId: user!.uid,
       done: false,
       name: values.name,
       description: values.description,
+      scheduledAt: scheduledAtDate ? scheduledAtDate.toDate() : scheduledAtDate,
     };
     const taskGroup: InboxType = { __type: "inbox", name: "__inbox__" };
     try {
@@ -45,9 +51,13 @@ function AddTaskForm(
     onCancel();
   };
 
+  const handleFormValueChange = (_, values: AddTaskFieldType) => {
+    setIsSubmitDisabled(!values.name.trim());
+  };
+
   return (
     <div className={`${styles["add-task-form"]} ${props.className}`}>
-      <Form onFinish={handleFinish}>
+      <Form onFinish={handleFinish} onValuesChange={handleFormValueChange}>
         <div className="p-6px">
           <Form.Item name="name">
             <Input
@@ -61,14 +71,28 @@ function AddTaskForm(
             <Input placeholder="描述" variant="borderless"></Input>
           </Form.Item>
         </div>
-        <Form.Item>
+        <Form.Item name="scheduledAtDate">
           <div className={styles["footer"]}>
-            <Button type="text" className="mr-6px" disabled={loading} onClick={onCancel}>
-              取消
-            </Button>
-            <Button type="primary" htmlType="submit" loading={loading}>
-              添加任务
-            </Button>
+            <DatePicker
+              value={scheduledAtDate}
+              placeholder="截止日期"
+              size="small"
+              className="w-120px"
+              onChange={(date: Dayjs | null) => setScheduledAtDate(date)}
+            />
+            <div>
+              <Button type="text" className="mr-6px" disabled={loading} onClick={onCancel}>
+                取消
+              </Button>
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={loading}
+                disabled={isSubmitDisabled}
+              >
+                添加任务
+              </Button>
+            </div>
           </div>
         </Form.Item>
       </Form>

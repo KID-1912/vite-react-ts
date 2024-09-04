@@ -9,7 +9,8 @@ interface Task {
   scheduledAt: Date | null;
 }
 
-interface NewTask extends Pick<Task, "__type" | "userId" | "done" | "name" | "description"> {}
+interface NewTask
+  extends Pick<Task, "__type" | "userId" | "done" | "name" | "description" | "scheduledAt"> {}
 
 type InboxType = { __type: "inbox"; name: "__inbox__" };
 
