@@ -1,0 +1,20 @@
+.edit-task-form {
+  border-radius: 8px;
+  border: 1px solid #e6e6e6;
+  &:focus-within {
+    border-color: #b8b8b8;
+  }
+  :global(.ant-form-item) {
+    --ant-form-item-margin-bottom: 0px;
+    :global(.ant-input) {
+      --ant-input-padding-block: 0px;
+      --ant-input-padding-inline: 4px;
+    }
+  }
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 12px;
+    border-top: 1px solid #e6e6e6;
+  }
+}

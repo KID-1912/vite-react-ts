@@ -1,20 +1,21 @@
-import styles from "./add-task-item.module.scss";
+import styles from "./edit-task-item.module.scss";
 import { UserContext } from "@/context/user.tsx";
-import { addTaskDoc } from "@/api/tasks/tasks.ts";
+import { setTaskDoc } from "@/api/tasks/tasks.ts";
 import { DatePicker } from "antd";
+import dayjs from "dayjs";
 import type { InputRef } from "antd/es/input";
 import type { Dayjs } from "dayjs";
 
 type Props = {
+  task: Task;
   className?: string;
-  onAddTaskSuccess?: () => void | Promise<void>;
+  onEditTaskSuccess?: () => void | Promise<void>;
+  onCancel: () => void;
 };
 
-function AddTaskForm(
-  props: Pick<Props, "className" | "onAddTaskSuccess"> & { onCancel: () => void },
-) {
+export default function EditTaskForm(props: Props) {
   const { user } = useContext(UserContext);
-  const { onAddTaskSuccess, onCancel } = props;
+  const { task, onEditTaskSuccess, onCancel } = props;
 
   // 自动聚焦
   const autofocusRef = useRef<InputRef>(null);
@@ -22,16 +23,15 @@ function AddTaskForm(
     autofocusRef.current!.focus();
   }, []);
 
-  // 创建任务
+  // 编辑任务
   const [loading, setLoading] = useState(false);
-  type AddTaskFieldType = Pick<NewTask, "name" | "description">;
-  const [scheduledAtDate, setScheduledAtDate] = useState<Dayjs | null>(null);
-  const [isSubmitDisabled, setIsSubmitDisabled] = useState<boolean>(true);
-  const handleFinish = async (values: AddTaskFieldType) => {
-    const newTask: NewTask = {
-      __type: "task",
-      userId: user!.uid,
-      done: false,
+  const [scheduledAtDate, setScheduledAtDate] = useState<Dayjs | null>(
+    task.scheduledAt ? dayjs(task.scheduledAt) : null,
+  );
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState<boolean>(false);
+  const handleFinish = async (values: Task) => {
+    const editTask: Task = {
+      ...task,
       name: values.name,
       description: values.description,
       scheduledAt: scheduledAtDate ? scheduledAtDate.toDate() : scheduledAtDate,
@@ -39,9 +39,9 @@ function AddTaskForm(
     const taskGroup: InboxType = { __type: "inbox", name: "__inbox__" };
     try {
       setLoading(true);
-      await addTaskDoc({ task: newTask, taskGroup, userId: user!.uid });
-      message.success("任务已添加");
-      onAddTaskSuccess?.();
+      await setTaskDoc({ task: editTask, taskGroup, userId: user!.uid });
+      message.success("编辑成功");
+      onEditTaskSuccess?.();
     } catch (error) {
       console.error(error);
       message.error("操作失败");
@@ -50,13 +50,17 @@ function AddTaskForm(
     onCancel();
   };
 
-  const handleFormValueChange = (_: unknown, values: AddTaskFieldType) => {
+  const handleFormValueChange = (_: unknown, values: Task) => {
     setIsSubmitDisabled(!values.name.trim());
   };
 
   return (
-    <div className={`${styles["add-task-form"]} ${props.className}`}>
-      <Form onFinish={handleFinish} onValuesChange={handleFormValueChange}>
+    <div className={`${styles["edit-task-form"]} ${props.className}`}>
+      <Form
+        initialValues={{ name: task.name, description: task.description }}
+        onFinish={handleFinish}
+        onValuesChange={handleFormValueChange}
+      >
         <div className="p-6px">
           <Form.Item name="name">
             <Input
@@ -89,7 +93,7 @@ function AddTaskForm(
                 loading={loading}
                 disabled={isSubmitDisabled}
               >
-                添加任务
+                保存
               </Button>
             </div>
           </div>
@@ -97,27 +101,4 @@ function AddTaskForm(
       </Form>
     </div>
   );
-}
-
-export default function AddTaskItem(props: Props) {
-  const [isFormMode, setIsFormMode] = useState(false);
-  if (isFormMode) {
-    return (
-      <AddTaskForm
-        className={props.className}
-        onAddTaskSuccess={props.onAddTaskSuccess}
-        onCancel={() => setIsFormMode(false)}
-      />
-    );
-  } else {
-    return (
-      <div className={`${styles["add-task-item"]} ${props.className}`}>
-        <AntdPlusOutlined className={styles["icon-plus-outline"]} />
-        <AntdPlusCircleFilled className={styles["icon-plus-circle-filled"]} />
-        <div className="ml-4px" onClick={() => setIsFormMode(true)}>
-          添加任务
-        </div>
-      </div>
-    );
-  }
 }

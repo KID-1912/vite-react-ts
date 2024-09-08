@@ -3,10 +3,11 @@ import { formatScheduledDate, calcScheduledColor } from "@/utils/index.ts";
 
 type Props = {
   task: Task;
+  onEditTask: () => void;
   onDeleteTask: () => void;
 };
 
-export default function TaskItem({ task, onDeleteTask }: Props) {
+export default function TaskItem({ task, onEditTask, onDeleteTask }: Props) {
   return (
     <div className={styles["task-item"]}>
       <div className={styles["task-checkbox"]}>
@@ -16,7 +17,7 @@ export default function TaskItem({ task, onDeleteTask }: Props) {
         <div className="flex justify-between items-center h-16px">
           <div className="task-name">{task.name}</div>
           <div className="flex">
-            <div className={styles["action-item"]}>
+            <div className={styles["action-item"]} onClick={onEditTask}>
               <AntdEditOutlined />
             </div>
             <div className={styles["action-item"]} onClick={onDeleteTask}>

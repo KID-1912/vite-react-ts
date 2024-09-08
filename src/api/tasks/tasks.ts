@@ -1,6 +1,7 @@
 import {
   collection,
   addDoc,
+  setDoc,
   getDocs,
   query,
   where,
@@ -39,4 +40,12 @@ export const deleteTaskDoc = async (data: { task: Task; taskGroup: TaskGroup; us
   const path = getTasksCollectionPath(taskGroup, userId);
   const col = collection(db, path).withConverter(TaskConverter);
   await deleteDoc(doc(col, task.id));
+};
+
+// 更新任务
+export const setTaskDoc = async (data: { task: Task; taskGroup: TaskGroup; userId: string }) => {
+  const { task, taskGroup, userId } = data;
+  const path = getTasksCollectionPath(taskGroup, userId);
+  const col = collection(db, path).withConverter(TaskConverter);
+  await setDoc(doc(col, task.id), task);
 };

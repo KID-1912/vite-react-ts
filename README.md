@@ -12,7 +12,7 @@
 
 - ant-design √
 - layout：sidebar + header+main √
-- signin √ signout 登录状态持久化
+- signin √ signout 登录状态持久化 √
 - inbox
 
 ## Firebase
@@ -147,11 +147,13 @@ Inbox收件箱 任务列表 √
 
 登录状态加载 √ useAuthState.ts 为获取权限事件新增loading，为AuthGuard提供加载状态
 
-首页loading Skeleton 加载
+首页loading Skeleton 加载 √
 
-截止日期
+截止日期 √
 
-编辑任务
+编辑任务 √
+
+inbox、最近recent、project切换
 
 ### firebase
 

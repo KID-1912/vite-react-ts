@@ -3,6 +3,7 @@ import LayoutIndex from "@/layouts/layout.tsx";
 import Sidebar from "./components/Sidebar/Sidebar.tsx";
 import TaskItem from "./components/TaskItem/TaskItem.tsx";
 import AddTaskItem from "./components/AddTaskItem/AddTaskItem.tsx";
+import EditTaskItem from "./components/EditTaskItem/EditTaskItem.tsx";
 import { UserContext } from "@/context/user.tsx";
 import { deleteTaskDoc } from "@/api/tasks/tasks.ts";
 import { useTasks } from "./hooks/useTasks.tsx";
@@ -44,9 +45,38 @@ export default function Home() {
     setDeleteTaskModalOpen(false);
   };
 
-  const TaskList = taskList.map((task) => (
-    <TaskItem task={task} key={task.id} onDeleteTask={() => openDeleteTaskModal(task)} />
-  ));
+  // 编辑任务
+  const [isEditTask, setIsEditTask] = useState(false);
+  const onEditTask = (task: Task) => {
+    if (isEditTask) {
+      setIsEditTask(false);
+      return;
+    }
+    setIsEditTask(true);
+    currentTask.current = task;
+  };
+
+  const TaskList = taskList.map((task) => {
+    console.log(isEditTask, task === currentTask.current);
+    if (isEditTask === true && task === currentTask.current) {
+      return (
+        <EditTaskItem
+          task={task}
+          key={task.id}
+          onEditTaskSuccess={getTaskList}
+          onCancel={() => setIsEditTask(false)}
+        />
+      );
+    }
+    return (
+      <TaskItem
+        task={task}
+        key={task.id}
+        onEditTask={() => onEditTask(task)}
+        onDeleteTask={() => openDeleteTaskModal(task)}
+      />
+    );
+  });
 
   return (
     <>
