@@ -169,4 +169,4 @@ inbox、最近recent、project切换
 
 5. 一键复制firebase配置，作为nodejs项目的 `src/firebase.ts` 文件
 
-6. 运行项目，设置索引
+6. 运行项目，设置索引(哪来的？)

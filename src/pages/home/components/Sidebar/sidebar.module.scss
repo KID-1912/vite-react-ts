@@ -3,6 +3,28 @@
   --ant-layout-sider-bg: transparent;
   width: 264px;
   height: 100%;
+  padding: 12px 0;
   flex-shrink: 0;
   border-right: 1px solid #f1f1f1;
+  :global {
+    .task-group-item {
+      padding: 12px;
+      border-radius: 4px 0 0 4px;
+      cursor: pointer;
+      &.activated {
+        color: var(--ant-color-primary);
+        font-weight: bold;
+        background-color: #fff;
+        transition: all 0.3s;
+      }
+      &:hover {
+        color: var(--ant-color-primary);
+      }
+    }
+    .icon-inbox,
+    .icon-today {
+      font-size: 18px;
+      margin-right: 8px;
+    }
+  }
 }

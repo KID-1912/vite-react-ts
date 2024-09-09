@@ -14,6 +14,10 @@ interface NewTask
 
 type InboxType = { __type: "inbox"; name: "__inbox__" };
 
+type TodayFilterType = { __type: "today"; name: "__today__" };
+
+type RecentFilterType = { __type: "recent"; name: "__recent__" };
+
 type ProjectType = {
   __type: "project";
   id?: string;
@@ -22,4 +26,4 @@ type ProjectType = {
   color: string;
 };
 
-type TaskGroup = InboxType | ProjectType;
+type TaskGroup = InboxType | TodayFilterType | RecentFilterType | ProjectType;

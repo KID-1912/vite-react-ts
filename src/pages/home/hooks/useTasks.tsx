@@ -10,7 +10,7 @@ export const useTasks = (taskGroup: TaskGroup) => {
   let isMounted: boolean;
   const getTaskList = async () => {
     setLoading(true);
-    const taskList: Task[] = await getTaskDocsByGroup({ taskGroup, userId: user!.uid });
+    const taskList = (await getTaskDocsByGroup({ taskGroup, userId: user!.uid })) as Task[];
     try {
       if (isMounted === false) return;
       setTaskList(taskList);

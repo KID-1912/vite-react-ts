@@ -7,12 +7,13 @@ import EditTaskItem from "./components/EditTaskItem/EditTaskItem.tsx";
 import { UserContext } from "@/context/user.tsx";
 import { deleteTaskDoc } from "@/api/tasks/tasks.ts";
 import { useTasks } from "./hooks/useTasks.tsx";
+import { INBOX } from "@/constants/TASK_GROUP.ts";
 
 export default function Home() {
   const { user } = useContext(UserContext);
 
   // taskGroup类别
-  const defaultTaskGroup: TaskGroup = { __type: "inbox", name: "__inbox__" };
+  const defaultTaskGroup: TaskGroup = INBOX;
   const [activatedTaskGroup, setActivatedTaskGroup] = useState<TaskGroup>(defaultTaskGroup);
 
   // 任务列表
@@ -57,7 +58,6 @@ export default function Home() {
   };
 
   const TaskList = taskList.map((task) => {
-    console.log(isEditTask, task === currentTask.current);
     if (isEditTask === true && task === currentTask.current) {
       return (
         <EditTaskItem
@@ -81,7 +81,10 @@ export default function Home() {
   return (
     <>
       <LayoutIndex>
-        <Sidebar />
+        <Sidebar
+          activatedTaskGroup={activatedTaskGroup}
+          onActivateTaskGroup={setActivatedTaskGroup}
+        />
         <Layout.Content className="p-30px bg-white ml-200px min-h-full">
           <div className="text-26px">收件箱</div>
           <div className="mt-24px">
