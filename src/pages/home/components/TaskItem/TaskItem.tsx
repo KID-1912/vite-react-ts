@@ -5,12 +5,13 @@ type Props = {
   task: Task;
   onEditTask: () => void;
   onDeleteTask: () => void;
+  onCheckTask: () => void;
 };
 
-export default function TaskItem({ task, onEditTask, onDeleteTask }: Props) {
+export default function TaskItem({ task, onEditTask, onDeleteTask, onCheckTask }: Props) {
   return (
     <div className={styles["task-item"]}>
-      <div className={styles["task-checkbox"]}>
+      <div className={styles["task-checkbox"]} onClick={onCheckTask}>
         <AntdCheckOutlined className={styles["icon-checked"]} />
       </div>
       <div className="flex-1 ml-12px">

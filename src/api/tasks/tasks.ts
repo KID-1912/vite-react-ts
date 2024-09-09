@@ -61,10 +61,18 @@ export const deleteTaskDoc = async (data: { task: Task; taskGroup: TaskGroup; us
   await deleteDoc(doc(col, task.id));
 };
 
-// 更新任务
+// 更新/编辑任务信息
 export const setTaskDoc = async (data: { task: Task; taskGroup: TaskGroup; userId: string }) => {
   const { task, taskGroup, userId } = data;
   const path = getTasksCollectionPath(taskGroup, userId);
   const col = collection(db, path).withConverter(TaskConverter);
   await setDoc(doc(col, task.id), task);
+};
+
+// 完成任务
+export const doneTaskDoc = async (data: { task: Task; taskGroup: TaskGroup; userId: string }) => {
+  const { task, taskGroup, userId } = data;
+  const path = getTasksCollectionPath(taskGroup, userId);
+  const col = collection(db, path).withConverter(TaskConverter);
+  await setDoc(doc(col, task.id), { ...task, done: true });
 };

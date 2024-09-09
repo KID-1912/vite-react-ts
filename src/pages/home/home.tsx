@@ -5,7 +5,7 @@ import TaskItem from "./components/TaskItem/TaskItem.tsx";
 import AddTaskItem from "./components/AddTaskItem/AddTaskItem.tsx";
 import EditTaskItem from "./components/EditTaskItem/EditTaskItem.tsx";
 import { UserContext } from "@/context/user.tsx";
-import { deleteTaskDoc } from "@/api/tasks/tasks.ts";
+import { deleteTaskDoc, doneTaskDoc } from "@/api/tasks/tasks.ts";
 import { useTasks } from "./hooks/useTasks.tsx";
 import { INBOX } from "@/constants/TASK_GROUP.ts";
 
@@ -57,6 +57,22 @@ export default function Home() {
     currentTask.current = task;
   };
 
+  // 完成任务
+  const handleDoneTask = async (task: Task) => {
+    const params = {
+      task: task,
+      taskGroup: activatedTaskGroup,
+      userId: user!.uid,
+    };
+    try {
+      await doneTaskDoc(params);
+      getTaskList();
+    } catch (error) {
+      console.warn(error);
+      message.error("操作失败，请稍后重试");
+    }
+  };
+
   const TaskList = taskList.map((task) => {
     if (isEditTask === true && task === currentTask.current) {
       return (
@@ -74,6 +90,7 @@ export default function Home() {
         key={task.id}
         onEditTask={() => onEditTask(task)}
         onDeleteTask={() => openDeleteTaskModal(task)}
+        onCheckTask={() => handleDoneTask(task)}
       />
     );
   });

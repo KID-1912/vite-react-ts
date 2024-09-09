@@ -34,7 +34,7 @@ export default function Sidebar(props: Props) {
         onClick={() => onActivateTaskGroup(RECENT_FILTER)}
       >
         <AntdCalendarOutlined className="icon-today" />
-        近期
+        即将到来
       </div>
     </Layout.Sider>
   );
