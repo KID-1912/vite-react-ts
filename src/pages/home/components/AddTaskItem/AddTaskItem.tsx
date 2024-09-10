@@ -7,14 +7,14 @@ import type { Dayjs } from "dayjs";
 
 type Props = {
   className?: string;
+  taskGroup: TaskGroup;
   onAddTaskSuccess?: () => void | Promise<void>;
 };
 
-function AddTaskForm(
-  props: Pick<Props, "className" | "onAddTaskSuccess"> & { onCancel: () => void },
-) {
+function AddTaskForm(props: Props & { onCancel: () => void }) {
+  const { message } = App.useApp();
   const { user } = useContext(UserContext);
-  const { onAddTaskSuccess, onCancel } = props;
+  const { taskGroup, onAddTaskSuccess, onCancel } = props;
 
   // 自动聚焦
   const autofocusRef = useRef<InputRef>(null);
@@ -36,7 +36,6 @@ function AddTaskForm(
       description: values.description,
       scheduledAt: scheduledAtDate ? scheduledAtDate.toDate() : scheduledAtDate,
     };
-    const taskGroup: InboxType = { __type: "inbox", name: "__inbox__" };
     try {
       setLoading(true);
       await addTaskDoc({ task: newTask, taskGroup, userId: user!.uid });
@@ -105,6 +104,7 @@ export default function AddTaskItem(props: Props) {
     return (
       <AddTaskForm
         className={props.className}
+        taskGroup={props.taskGroup}
         onAddTaskSuccess={props.onAddTaskSuccess}
         onCancel={() => setIsFormMode(false)}
       />

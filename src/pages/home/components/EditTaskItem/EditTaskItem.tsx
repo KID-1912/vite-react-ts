@@ -9,13 +9,15 @@ import type { Dayjs } from "dayjs";
 type Props = {
   task: Task;
   className?: string;
+  taskGroup: TaskGroup;
   onEditTaskSuccess?: () => void | Promise<void>;
   onCancel: () => void;
 };
 
 export default function EditTaskForm(props: Props) {
+  const { message } = App.useApp();
   const { user } = useContext(UserContext);
-  const { task, onEditTaskSuccess, onCancel } = props;
+  const { task, taskGroup, onEditTaskSuccess, onCancel } = props;
 
   // 自动聚焦
   const autofocusRef = useRef<InputRef>(null);
@@ -36,7 +38,6 @@ export default function EditTaskForm(props: Props) {
       description: values.description,
       scheduledAt: scheduledAtDate ? scheduledAtDate.toDate() : scheduledAtDate,
     };
-    const taskGroup: InboxType = { __type: "inbox", name: "__inbox__" };
     try {
       setLoading(true);
       await setTaskDoc({ task: editTask, taskGroup, userId: user!.uid });

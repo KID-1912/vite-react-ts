@@ -8,7 +8,7 @@ interface LoginFieldType {
 
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
+  const { message } = App.useApp();
   const navigate = useNavigate();
   const initialLoginValues: LoginFieldType = {
     email: "example@example.com",
@@ -21,9 +21,9 @@ export default function LoginForm() {
     try {
       await signInWithEmailAndPassword(firebaseAuth, email, password);
       navigate("/");
-      messageApi.error("登录成功");
+      message.error("登录成功");
     } catch (error) {
-      messageApi.error("登录失败");
+      message.error("登录失败");
       console.warn("登录失败", error);
     }
     setLoading(false);
@@ -49,7 +49,6 @@ export default function LoginForm() {
           </Button>
         </Form.Item>
       </Form>
-      {contextHolder}
     </>
   );
 }

@@ -155,7 +155,7 @@ Inbox收件箱 任务列表 √
 
 inbox、最近recent、project切换 √
 
-完成任务
+标记完成任务 √
 
 ### firebase
 

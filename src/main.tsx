@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
+import { App as AntdApp } from "antd";
 import "virtual:windi.css";
 import dayjs from "dayjs";
 import { ConfigProvider } from "antd";
@@ -17,7 +18,9 @@ const container = document.getElementById("root") as HTMLDivElement;
 ReactDOM.createRoot(container).render(
   <React.StrictMode>
     <ConfigProvider theme={{ cssVar: true, hashed: false }} locale={locale}>
-      <App />
+      <AntdApp className="h-full" notification={{ showProgress: true, duration: 3 }}>
+        <App />
+      </AntdApp>
     </ConfigProvider>
   </React.StrictMode>,
 );

@@ -7,10 +7,11 @@ import EditTaskItem from "./components/EditTaskItem/EditTaskItem.tsx";
 import { UserContext } from "@/context/user.tsx";
 import { deleteTaskDoc, doneTaskDoc } from "@/api/tasks/tasks.ts";
 import { useTasks } from "./hooks/useTasks.tsx";
-import { INBOX } from "@/constants/TASK_GROUP.ts";
+import { INBOX, TASK_GROUP_NAME_MAP } from "@/constants/TASK_GROUP.ts";
 
 export default function Home() {
   const { user } = useContext(UserContext);
+  const { message, notification } = App.useApp();
 
   // taskGroup类别
   const defaultTaskGroup: TaskGroup = INBOX;
@@ -66,6 +67,11 @@ export default function Home() {
     };
     try {
       await doneTaskDoc(params);
+      notification.success({
+        placement: "bottomLeft",
+        message: "1个任务已完成",
+        style: { width: "240px" },
+      });
       getTaskList();
     } catch (error) {
       console.warn(error);
@@ -79,6 +85,7 @@ export default function Home() {
         <EditTaskItem
           task={task}
           key={task.id}
+          taskGroup={activatedTaskGroup}
           onEditTaskSuccess={getTaskList}
           onCancel={() => setIsEditTask(false)}
         />
@@ -103,10 +110,14 @@ export default function Home() {
           onActivateTaskGroup={setActivatedTaskGroup}
         />
         <Layout.Content className="p-30px bg-white ml-200px min-h-full">
-          <div className="text-26px">收件箱</div>
+          <div className="text-26px">{TASK_GROUP_NAME_MAP.get(activatedTaskGroup.name)}</div>
           <div className="mt-24px">
             {loading ? <Skeleton active /> : TaskList}
-            <AddTaskItem className="mt-24px" onAddTaskSuccess={getTaskList}></AddTaskItem>
+            <AddTaskItem
+              className="mt-24px"
+              taskGroup={activatedTaskGroup}
+              onAddTaskSuccess={getTaskList}
+            ></AddTaskItem>
           </div>
         </Layout.Content>
       </LayoutIndex>
