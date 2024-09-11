@@ -23,17 +23,31 @@
       }
     }
     .icon-inbox,
-    .icon-today,
-    .icon-arrow {
+    .icon-today {
       font-size: 18px;
       margin-right: 8px;
     }
     .project-group-toggle {
-      padding: 20px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+      padding: 12px;
       font-weight: bold;
       border-bottom: 1px solid #f1f1f1;
       cursor: pointer;
+      .icon-arrow {
+        color: #1a1a1a;
+        font-size: 16px;
+        margin-right: 8px;
+        transform: rotate(90deg);
+        transition: all 0.3s;
+      }
+      &.expanded .icon-arrow {
+        transform: rotate(0deg);
+      }
       .icon-add-project {
+        font-size: 18px;
         opacity: 0;
       }
       &:hover .icon-add-project {

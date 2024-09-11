@@ -26,7 +26,6 @@ function AddTaskForm(props: Props & { onCancel: () => void }) {
   const [loading, setLoading] = useState(false);
   type AddTaskFieldType = Pick<NewTask, "name" | "description">;
   const [scheduledAtDate, setScheduledAtDate] = useState<Dayjs | null>(null);
-  const [isSubmitDisabled, setIsSubmitDisabled] = useState<boolean>(true);
   const handleFinish = async (values: AddTaskFieldType) => {
     const newTask: NewTask = {
       __type: "task",
@@ -49,13 +48,14 @@ function AddTaskForm(props: Props & { onCancel: () => void }) {
     onCancel();
   };
 
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const handleFormValueChange = (_: unknown, values: AddTaskFieldType) => {
     setIsSubmitDisabled(!values.name.trim());
   };
 
   return (
     <div className={`${styles["add-task-form"]} ${props.className}`}>
-      <Form onFinish={handleFinish} onValuesChange={handleFormValueChange}>
+      <Form onValuesChange={handleFormValueChange} onFinish={handleFinish}>
         <div className="p-6px">
           <Form.Item name="name">
             <Input

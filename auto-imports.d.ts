@@ -14,6 +14,7 @@ declare global {
   const AntdLoadingOutlined: typeof import('~icons/ant-design/loading-outlined.jsx')['default']
   const AntdPlusCircleFilled: typeof import('~icons/ant-design/plus-circle-filled.jsx')['default']
   const AntdPlusOutlined: typeof import('~icons/ant-design/plus-outlined.jsx')['default']
+  const AntdRightOutlined: typeof import('~icons/ant-design/right-outlined.jsx')['default']
   const App: typeof import('antd')['App']
   const Button: typeof import('antd')['Button']
   const Flex: typeof import('antd')['Flex']

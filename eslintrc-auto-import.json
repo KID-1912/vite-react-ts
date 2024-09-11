@@ -55,6 +55,7 @@
     "AntdPlusCircleFilled": true,
     "AntdPlusOutlined": true,
     "AntdDownOutlined": true,
-    "Select": true
+    "Select": true,
+    "AntdRightOutlined": true
   }
 }

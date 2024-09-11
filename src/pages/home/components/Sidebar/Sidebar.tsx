@@ -14,6 +14,8 @@ export default function Sidebar(props: Props) {
     return taskGroup.__type === activatedTaskGroup.__type;
   };
 
+  const [expanded, setExpanded] = useState(true);
+
   // 添加project弹窗
   const [addProjectModalOpen, setAddProjectModalOpen] = useState(false);
 
@@ -41,13 +43,13 @@ export default function Sidebar(props: Props) {
           <AntdCalendarOutlined className="icon-today" />
           {TASK_GROUP_NAME_MAP.get(RECENT_FILTER.name)}
         </div>
-        <div className="project-group-toggle flex justify-between items-center">
-          <div className="flex items-center">
-            <AntdDownOutlined className="icon-arrow" />
+        <div className={`project-group-toggle ${expanded ? "expanded" : ""}`}>
+          <div className="flex items-center" onClick={() => setExpanded(!expanded)}>
+            <AntdRightOutlined className="icon-arrow" />
             我的项目
           </div>
           <AntdPlusOutlined
-            className="icon-add-project"
+            className="icon-add-project p-2px"
             onClick={() => setAddProjectModalOpen(true)}
           />
         </div>
@@ -55,7 +57,7 @@ export default function Sidebar(props: Props) {
           <div className="project-group-item">项目一</div>
         </div>
       </Layout.Sider>
-      <AddProjectModal open={addProjectModalOpen} />
+      <AddProjectModal open={addProjectModalOpen} setOpen={setAddProjectModalOpen} />
     </>
   );
 }

@@ -128,7 +128,6 @@ export default function Home() {
         onCancel={() => setDeleteTaskModalOpen(false)}
         maskClosable={false}
         okText="删除"
-        cancelText="取消"
       >
         {currentTask.current && (
           <p className="py-12px">
