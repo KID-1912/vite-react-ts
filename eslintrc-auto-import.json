@@ -53,6 +53,8 @@
     "AntdEditOutlined": true,
     "AntdInboxOutlined": true,
     "AntdPlusCircleFilled": true,
-    "AntdPlusOutlined": true
+    "AntdPlusOutlined": true,
+    "AntdDownOutlined": true,
+    "Select": true
   }
 }

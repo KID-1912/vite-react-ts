@@ -6,6 +6,7 @@
   padding: 12px 0;
   flex-shrink: 0;
   border-right: 1px solid #f1f1f1;
+  user-select: none;
   :global {
     .task-group-item {
       padding: 12px;
@@ -22,9 +23,23 @@
       }
     }
     .icon-inbox,
-    .icon-today {
+    .icon-today,
+    .icon-arrow {
       font-size: 18px;
       margin-right: 8px;
+    }
+    .project-group-toggle {
+      padding: 20px 12px;
+      font-weight: bold;
+      border-bottom: 1px solid #f1f1f1;
+      cursor: pointer;
+      .icon-add-project {
+        opacity: 0;
+      }
+      &:hover .icon-add-project {
+        opacity: 1;
+        transition: all 0.3s;
+      }
     }
   }
 }

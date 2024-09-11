@@ -34,7 +34,7 @@ export default defineConfig(({ mode }) => {
           "react",
           "react-router-dom",
           { react: ["Suspense", "createContext"] },
-          { antd: ["App", "Button", "Form", "Input", "Flex", "Modal"] },
+          { antd: ["App", "Button", "Form", "Input", "Select", "Flex", "Modal"] },
         ],
         resolvers: [
           IconsResolver({
