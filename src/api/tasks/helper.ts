@@ -1,5 +1,4 @@
 import { serverTimestamp, Timestamp } from "firebase/firestore";
-
 import type { FirestoreDataConverter } from "firebase/firestore";
 
 export const getTasksCollectionPath = (taskGroup: TaskGroup, userId: string) => {
@@ -27,7 +26,7 @@ export const TaskConverter: FirestoreDataConverter<Task> = {
       id: snapshot.id,
       ...data,
       scheduledAt: data.scheduledAt?.toDate(),
-      createdAt: data.createdAt?.toDate(),
+      createdAt: data.createdAt.toDate(),
     } as Task;
     return task;
   },

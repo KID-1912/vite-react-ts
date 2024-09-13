@@ -1,5 +1,7 @@
 import { PROJECT_COLOR } from "@/constants/PROJECT_COLOR";
 import styles from "./add-project-modal.module.scss";
+import { UserContext } from "@/context/user.tsx";
+import {addProjectDoc} from "@/api/projects/project.ts";
 
 const ColorLabel = (props: { name: string; color: string }) => {
   return (
@@ -16,14 +18,31 @@ type Props = {
 };
 
 export default function AddProjectModal(props: Props) {
+  const { user } = useContext(UserContext);
+  const { message } = App.useApp();
+
   const { open, setOpen } = props;
   const defaultFormValues = { name: "", color: PROJECT_COLOR[0].color };
 
   type AddProjectFieldType = { name: string; color: string };
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
   const handleSubmit = async () => {
     const values: AddProjectFieldType = form.getFieldsValue();
-    console.log(values);
+    const newProject: NewProject = {
+      __type: "project",
+      userId: user!.uid,
+      name: values.name,
+      color: values.color,
+    }
+    setLoading(true);
+    try {
+      await addProjectDoc({project: newProject, userId: user!.uid});
+    } catch (error) {
+      console.log(error);
+      message.error("操作失败");
+    }
+    setLoading(false);
   };
 
   const [isOkBtnDisabled, setIsOkBtnDisabled] = useState(true);
@@ -40,7 +59,7 @@ export default function AddProjectModal(props: Props) {
       className="px-12px"
       maskClosable={false}
       okText="添加"
-      okButtonProps={{ disabled: isOkBtnDisabled }}
+      okButtonProps={{ loading, disabled: isOkBtnDisabled }}
       onOk={handleSubmit}
     >
       <Form

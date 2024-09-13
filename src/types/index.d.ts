@@ -12,6 +12,17 @@ interface Task {
 interface NewTask
   extends Pick<Task, "__type" | "userId" | "done" | "name" | "description" | "scheduledAt"> {}
 
+interface Project {
+  __type: 'project';
+  id?:string;
+  userId: string;
+  name: string;
+  createdAt?: Date;
+  color: string;
+}
+
+interface NewProject extends Pick<Project, "__type" | "userId" | "name" | "color"> {}
+
 type InboxType = { __type: "inbox"; name: "__inbox__" };
 
 type TodayFilterType = { __type: "today"; name: "__today__" };
@@ -22,7 +33,7 @@ type ProjectType = {
   __type: "project";
   id?: string;
   name: string;
-  createdAt?: Date;
+  createdAt: Date;
   color: string;
 };
 
