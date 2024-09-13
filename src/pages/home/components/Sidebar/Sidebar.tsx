@@ -14,10 +14,21 @@ export default function Sidebar(props: Props) {
     return taskGroup.__type === activatedTaskGroup.__type;
   };
 
-  const [expanded, setExpanded] = useState(true);
-
   // 添加project弹窗
   const [addProjectModalOpen, setAddProjectModalOpen] = useState(false);
+
+  // 项目列表
+  const [expanded, setExpanded] = useState(false);
+  const ProjectList = (
+    <div className="project-list">
+      {Array.from({ length: 10 }, (v, i) => i + 1).map((i: number) => (
+        <div className="project-item" key={i}>
+          <div className="icon-circle mr-10px"></div>
+          项目{i}
+        </div>
+      ))}
+    </div>
+  );
 
   return (
     <>
@@ -43,7 +54,7 @@ export default function Sidebar(props: Props) {
           <AntdCalendarOutlined className="icon-today" />
           {TASK_GROUP_NAME_MAP.get(RECENT_FILTER.name)}
         </div>
-        <div className={`project-group-toggle ${expanded ? "expanded" : ""}`}>
+        <div className={`project-group-toggle ${expanded ? "" : "expanded"}`}>
           <div className="flex items-center" onClick={() => setExpanded(!expanded)}>
             <AntdRightOutlined className="icon-arrow" />
             我的项目
@@ -53,9 +64,7 @@ export default function Sidebar(props: Props) {
             onClick={() => setAddProjectModalOpen(true)}
           />
         </div>
-        <div className="project-task-list">
-          <div className="project-group-item">项目一</div>
-        </div>
+        {expanded && ProjectList}
       </Layout.Sider>
       <AddProjectModal open={addProjectModalOpen} setOpen={setAddProjectModalOpen} />
     </>

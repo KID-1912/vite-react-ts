@@ -8,6 +8,10 @@
   border-right: 1px solid #f1f1f1;
   user-select: none;
   :global {
+    .ant-layout-sider-children {
+      display: flex;
+      flex-direction: column;
+    }
     .task-group-item {
       padding: 12px;
       border-radius: 4px 0 0 4px;
@@ -53,6 +57,31 @@
       &:hover .icon-add-project {
         opacity: 1;
         transition: all 0.3s;
+      }
+    }
+    .project-list {
+      overflow-y: auto;
+      flex-grow: 1;
+      .project-item {
+        display: flex;
+        align-items: center;
+        padding: 8px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        &:hover {
+          background-color: #f2efed;
+          transition: all 0.3s;
+        }
+        &.activated {
+          color: var(--ant-color-primary);
+          background-color: #ffefe5;
+        }
+        .icon-circle {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background-color: pink;
+        }
       }
     }
   }
