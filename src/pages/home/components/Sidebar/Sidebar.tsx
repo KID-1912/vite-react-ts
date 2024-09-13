@@ -2,6 +2,8 @@ import { Layout } from "antd";
 import styles from "./sidebar.module.scss";
 import { INBOX, TODAY_FILTER, RECENT_FILTER, TASK_GROUP_NAME_MAP } from "@/constants/TASK_GROUP.ts";
 import AddProjectModal from "../AddProjectModal/AddProjectModal.tsx";
+import { UserContext } from "@/context/user.tsx";
+import { getProjectDoc } from "@/api/projects/project.ts";
 
 type Props = {
   activatedTaskGroup: TaskGroup;
@@ -9,6 +11,8 @@ type Props = {
 };
 
 export default function Sidebar(props: Props) {
+  const { user } = useContext(UserContext);
+
   const { activatedTaskGroup, onActivateTaskGroup } = props;
   const isActivated = (taskGroup: TaskGroup) => {
     return taskGroup.__type === activatedTaskGroup.__type;
@@ -19,16 +23,28 @@ export default function Sidebar(props: Props) {
 
   // 项目列表
   const [expanded, setExpanded] = useState(false);
-  const ProjectList = (
-    <div className="project-list">
-      {Array.from({ length: 10 }, (v, i) => i + 1).map((i: number) => (
-        <div className="project-item" key={i}>
-          <div className="icon-circle mr-10px"></div>
-          项目{i}
-        </div>
-      ))}
-    </div>
-  );
+  const [projectList, setProjectList] = useState<Project[]>([]);
+  const getProjectList = async () => {
+    try {
+      const projectList: Project[] = await getProjectDoc({ userId: user!.uid });
+      setProjectList(projectList);
+    } catch (error) {
+      console.warn(error);
+    }
+  };
+  useEffect(() => {
+    getProjectList();
+  }, []);
+
+  const ProjectItem = (props: { project: Project }) => {
+    const { project } = props;
+    return (
+      <div className="project-item">
+        <div className="icon-circle mr-10px" style={{ backgroundColor: project.color }}></div>
+        {project.name}
+      </div>
+    );
+  };
 
   return (
     <>
@@ -64,7 +80,13 @@ export default function Sidebar(props: Props) {
             onClick={() => setAddProjectModalOpen(true)}
           />
         </div>
-        {expanded && ProjectList}
+        {expanded && (
+          <div className="project-list">
+            {projectList.map((project) => (
+              <ProjectItem project={project} key={project.id} />
+            ))}
+          </div>
+        )}
       </Layout.Sider>
       <AddProjectModal open={addProjectModalOpen} setOpen={setAddProjectModalOpen} />
     </>
