@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs, query } from "firebase/firestore";
+import { addDoc, collection, getDocs, query, orderBy } from "firebase/firestore";
 import { db } from "@/context/firestore.tsx";
 import { ProjectConverter } from "./helper.ts";
 
@@ -19,6 +19,6 @@ export const getProjectDoc = async (data: { userId: string }) => {
   const { userId } = data;
   const path = `users/${userId}/projects`;
   const col = collection(db, path).withConverter(ProjectConverter);
-  const querySnapshot = await getDocs(query(col));
+  const querySnapshot = await getDocs(query(col, orderBy("createdAt", "desc")));
   return querySnapshot.docs.map((docSn) => docSn.data());
 };

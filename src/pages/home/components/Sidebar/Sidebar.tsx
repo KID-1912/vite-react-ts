@@ -14,6 +14,7 @@ export default function Sidebar(props: Props) {
   const { user } = useContext(UserContext);
 
   const { activatedTaskGroup, onActivateTaskGroup } = props;
+  const isMounted = useRef(false);
   const isActivated = (taskGroup: TaskGroup) => {
     return taskGroup.__type === activatedTaskGroup.__type;
   };
@@ -27,13 +28,17 @@ export default function Sidebar(props: Props) {
   const getProjectList = async () => {
     try {
       const projectList: Project[] = await getProjectDoc({ userId: user!.uid });
-      setProjectList(projectList);
+      isMounted.current && setProjectList(projectList);
     } catch (error) {
       console.warn(error);
     }
   };
   useEffect(() => {
+    isMounted.current = true;
     getProjectList();
+    return () => {
+      isMounted.current = false;
+    };
   }, []);
 
   const ProjectItem = (props: { project: Project }) => {
@@ -88,7 +93,11 @@ export default function Sidebar(props: Props) {
           </div>
         )}
       </Layout.Sider>
-      <AddProjectModal open={addProjectModalOpen} setOpen={setAddProjectModalOpen} />
+      <AddProjectModal
+        open={addProjectModalOpen}
+        setOpen={setAddProjectModalOpen}
+        onAddedProject={getProjectList}
+      />
     </>
   );
 }

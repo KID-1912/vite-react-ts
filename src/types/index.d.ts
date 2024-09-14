@@ -13,11 +13,11 @@ interface NewTask
   extends Pick<Task, "__type" | "userId" | "done" | "name" | "description" | "scheduledAt"> {}
 
 interface Project {
-  __type: 'project';
-  id?:string;
+  __type: "project";
+  id?: string;
   userId: string;
   name: string;
-  createdAt?: Date;
+  createdAt: Date;
   color: string;
 }
 

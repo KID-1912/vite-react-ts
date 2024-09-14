@@ -12,11 +12,10 @@ export const useTasks = (taskGroup: TaskGroup) => {
   const getTaskList = async () => {
     setLoading(true);
     const taskList = (await getTaskDocsByGroup({ taskGroup, userId: user!.uid })) as Task[];
+    if (isMounted === false) return;
     try {
-      if (isMounted === false) return;
       setTaskList(taskList);
     } catch (error) {
-      if (isMounted === false) return;
       console.warn(error);
       message.error("列表数据失败，请稍后重试");
     }

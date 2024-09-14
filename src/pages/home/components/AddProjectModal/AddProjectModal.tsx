@@ -15,13 +15,14 @@ const ColorLabel = (props: { name: string; color: string }) => {
 type Props = {
   open: boolean;
   setOpen: (arg: boolean) => void;
+  onAddedProject: () => void;
 };
 
 export default function AddProjectModal(props: Props) {
   const { user } = useContext(UserContext);
   const { message } = App.useApp();
 
-  const { open, setOpen } = props;
+  const { open, setOpen, onAddedProject } = props;
   const defaultFormValues = { name: "", color: PROJECT_COLOR[0].color };
 
   type AddProjectFieldType = { name: string; color: string };
@@ -38,6 +39,8 @@ export default function AddProjectModal(props: Props) {
     setLoading(true);
     try {
       await addProjectDoc({project: newProject, userId: user!.uid});
+      onAddedProject();
+      setOpen(false);
     } catch (error) {
       console.log(error);
       message.error("操作失败");

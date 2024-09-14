@@ -17,10 +17,19 @@ export default function Home() {
   const defaultTaskGroup: TaskGroup = INBOX;
   const [activatedTaskGroup, setActivatedTaskGroup] = useState<TaskGroup>(defaultTaskGroup);
 
-  // 任务列表
-  const { taskList, getTaskList, loading } = useTasks(activatedTaskGroup);
   // 当前操作task
   const currentTask = useRef<Task | null>(null);
+
+  // 编辑任务
+  const [isEditTask, setIsEditTask] = useState(false);
+  const onEditTask = (task: Task) => {
+    if (isEditTask) {
+      setIsEditTask(false);
+      return;
+    }
+    setIsEditTask(true);
+    currentTask.current = task;
+  };
 
   // 删除任务
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -47,17 +56,6 @@ export default function Home() {
     setDeleteTaskModalOpen(false);
   };
 
-  // 编辑任务
-  const [isEditTask, setIsEditTask] = useState(false);
-  const onEditTask = (task: Task) => {
-    if (isEditTask) {
-      setIsEditTask(false);
-      return;
-    }
-    setIsEditTask(true);
-    currentTask.current = task;
-  };
-
   // 完成任务
   const handleDoneTask = async (task: Task) => {
     const params = {
@@ -79,6 +77,8 @@ export default function Home() {
     }
   };
 
+  // 任务列表
+  const { taskList, getTaskList, loading } = useTasks(activatedTaskGroup);
   const TaskList = taskList.map((task) => {
     if (isEditTask === true && task === currentTask.current) {
       return (
@@ -101,6 +101,7 @@ export default function Home() {
       />
     );
   });
+
 
   return (
     <>
