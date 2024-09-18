@@ -56,6 +56,7 @@
     "AntdPlusOutlined": true,
     "AntdDownOutlined": true,
     "Select": true,
-    "AntdRightOutlined": true
+    "AntdRightOutlined": true,
+    "AntdEllipsisOutlined": true
   }
 }

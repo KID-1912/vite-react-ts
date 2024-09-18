@@ -1,0 +1,22 @@
+.home-content {
+  min-height: 100%;
+  margin-left: 200px;
+  padding: 30px;
+  background-color: #fff;
+  :global {
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 26px;
+      .icon-more {
+        opacity: 0;
+        cursor: pointer;
+      }
+      &:hover .icon-more {
+        opacity: 1;
+        transition: all 0.3s;
+      }
+    }
+  }
+}

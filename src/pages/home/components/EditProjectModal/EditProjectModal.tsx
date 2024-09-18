@@ -1,37 +1,38 @@
 import { PROJECT_COLOR } from "@/constants/PROJECT_COLOR";
-import styles from "./add-project-modal.module.scss";
+import styles from "..//AddProjectModal/add-project-modal.module.scss";
 import { UserContext } from "@/context/user.tsx";
-import { addProjectDoc } from "@/api/projects/projects.ts";
-import ColorLabel from "./ColorLabel.tsx";
+import { editProjectDoc } from "@/api/projects/projects.ts";
+import ColorLabel from "../AddProjectModal/ColorLabel";
 
 type Props = {
   open: boolean;
   setOpen: (arg: boolean) => void;
-  onAddedProject: () => void;
+  project: Project;
+  onEditedProject: () => void;
 };
 
-export default function AddProjectModal(props: Props) {
+export default function EditProjectModal(props: Props) {
   const { user } = useContext(UserContext);
   const { message } = App.useApp();
 
-  const { open, setOpen, onAddedProject } = props;
-  const defaultFormValues = { name: "", color: PROJECT_COLOR[0].color };
+  const { open, setOpen, project, onEditedProject } = props;
+  const initialFormValues = { name: project.name, color: project.color };
 
-  type AddProjectFieldType = { name: string; color: string };
+  type editProjectFieldType = { name: string; color: string };
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const handleSubmit = async () => {
-    const values: AddProjectFieldType = form.getFieldsValue();
-    const newProject: NewProject = {
-      __type: "project",
+    const values: editProjectFieldType = form.getFieldsValue();
+    const editProject: Project = {
+      ...project,
       userId: user!.uid,
       name: values.name,
       color: values.color,
     };
     setLoading(true);
     try {
-      await addProjectDoc({ project: newProject, userId: user!.uid });
-      onAddedProject();
+      await editProjectDoc({ project: editProject, userId: user!.uid });
+      onEditedProject();
       setOpen(false);
     } catch (error) {
       console.log(error);
@@ -41,25 +42,25 @@ export default function AddProjectModal(props: Props) {
   };
 
   const [isOkBtnDisabled, setIsOkBtnDisabled] = useState(true);
-  const handleFormValueChange = (_: unknown, values: AddProjectFieldType) => {
+  const handleFormValueChange = (_: unknown, values: editProjectFieldType) => {
     setIsOkBtnDisabled(!values.name.trim());
   };
 
   return (
     <Modal
       open={open}
-      title="新增项目"
+      title="编辑项目"
       onCancel={() => setOpen(false)}
       width={480}
       className="px-12px"
       maskClosable={false}
-      okText="添加"
+      okText="保存"
       okButtonProps={{ loading, disabled: isOkBtnDisabled }}
       onOk={handleSubmit}
     >
       <Form
         form={form}
-        initialValues={defaultFormValues}
+        initialValues={initialFormValues}
         onValuesChange={handleFormValueChange}
         layout="vertical"
         className="py-12px"

@@ -157,9 +157,19 @@ inbox、最近recent、project切换 √
 
 标记完成任务 √
 
-添加project item
+添加project item √
 
-查询 project item
+查询project item √
+
+project 选中并添加任务，任务数回显 √
+
+project 删除与编辑 √
+
+补充描述，logo,快速添加，退出登录，
+
+统一主题色
+
+注册新账号，任务独立
 
 ### firebase
 

@@ -1,5 +1,5 @@
 .sidebar {
-  position: fixed !important;
+  position: absolute !important;
   --ant-layout-sider-bg: transparent;
   width: 264px;
   height: 100%;
@@ -31,6 +31,15 @@
       font-size: 18px;
       margin-right: 8px;
     }
+    .count {
+      margin-left: auto;
+      color: #aaa;
+      font-size: 12px;
+      font-weight: normal;
+    }
+    .task-group-item.activated .count {
+      color: inherit;
+    }
     .project-group-toggle {
       display: flex;
       justify-content: space-between;
@@ -61,12 +70,13 @@
     }
     .project-list {
       overflow-y: auto;
+      overflow-y: overlay;
       flex-grow: 1;
       .project-item {
         display: flex;
         align-items: center;
         padding: 8px 15px;
-        border-radius: 4px;
+        border-radius: 6px;
         cursor: pointer;
         &:hover {
           background-color: #f2efed;
@@ -80,6 +90,14 @@
           width: 10px;
           height: 10px;
           border-radius: 50%;
+        }
+        .count {
+          margin-left: auto;
+          color: #aaa;
+          font-size: 12px;
+        }
+        &.activated .count {
+          color: #d1453b;
         }
       }
     }

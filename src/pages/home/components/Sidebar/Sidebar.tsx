@@ -2,19 +2,17 @@ import { Layout } from "antd";
 import styles from "./sidebar.module.scss";
 import { INBOX, TODAY_FILTER, RECENT_FILTER, TASK_GROUP_NAME_MAP } from "@/constants/TASK_GROUP.ts";
 import AddProjectModal from "../AddProjectModal/AddProjectModal.tsx";
-import { UserContext } from "@/context/user.tsx";
-import { getProjectDoc } from "@/api/projects/project.ts";
+import { ProjectListContext } from "@/context/project.tsx";
+import { useTaskCounts } from "../../hooks/useTaskCounts.ts";
 
 type Props = {
   activatedTaskGroup: TaskGroup;
+  taskList: Task[];
   onActivateTaskGroup: (taskGroup: TaskGroup) => void;
 };
 
 export default function Sidebar(props: Props) {
-  const { user } = useContext(UserContext);
-
-  const { activatedTaskGroup, onActivateTaskGroup } = props;
-  const isMounted = useRef(false);
+  const { activatedTaskGroup, taskList, onActivateTaskGroup } = props;
   const isActivated = (taskGroup: TaskGroup) => {
     return taskGroup.__type === activatedTaskGroup.__type;
   };
@@ -24,29 +22,21 @@ export default function Sidebar(props: Props) {
 
   // 项目列表
   const [expanded, setExpanded] = useState(false);
-  const [projectList, setProjectList] = useState<Project[]>([]);
-  const getProjectList = async () => {
-    try {
-      const projectList: Project[] = await getProjectDoc({ userId: user!.uid });
-      isMounted.current && setProjectList(projectList);
-    } catch (error) {
-      console.warn(error);
-    }
-  };
-  useEffect(() => {
-    isMounted.current = true;
-    getProjectList();
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
+  const { projectList, getProjectList } = useContext(ProjectListContext);
+  const { taskCounts } = useTaskCounts(taskList, projectList);
 
-  const ProjectItem = (props: { project: Project }) => {
-    const { project } = props;
+  const ProjectItem = (props: {
+    project: Project;
+    taskCount: number;
+    isActivated: boolean;
+    onClickProject: () => void;
+  }) => {
+    const { project, taskCount, isActivated, onClickProject } = props;
     return (
-      <div className="project-item">
+      <div className={`project-item ${isActivated ? "activated" : ""}`} onClick={onClickProject}>
         <div className="icon-circle mr-10px" style={{ backgroundColor: project.color }}></div>
         {project.name}
+        <span className="count">{taskCount || ""}</span>
       </div>
     );
   };
@@ -60,6 +50,7 @@ export default function Sidebar(props: Props) {
         >
           <AntdInboxOutlined className="icon-inbox" />
           {TASK_GROUP_NAME_MAP.get(INBOX.name)}
+          <span className="count">{taskCounts[INBOX.name] || ""}</span>
         </div>
         <div
           className={`task-group-item flex items-center ${isActivated(TODAY_FILTER) ? "activated" : ""}`}
@@ -67,6 +58,7 @@ export default function Sidebar(props: Props) {
         >
           <AntdCalendarOutlined className="icon-today" />
           {TASK_GROUP_NAME_MAP.get(TODAY_FILTER.name)}
+          <span className="count">{taskCounts[TODAY_FILTER.name] || ""}</span>
         </div>
         <div
           className={`task-group-item flex items-center ${isActivated(RECENT_FILTER) ? "activated" : ""}`}
@@ -74,6 +66,7 @@ export default function Sidebar(props: Props) {
         >
           <AntdCalendarOutlined className="icon-today" />
           {TASK_GROUP_NAME_MAP.get(RECENT_FILTER.name)}
+          <span className="count">{taskCounts[RECENT_FILTER.name] || ""}</span>
         </div>
         <div className={`project-group-toggle ${expanded ? "" : "expanded"}`}>
           <div className="flex items-center" onClick={() => setExpanded(!expanded)}>
@@ -88,7 +81,13 @@ export default function Sidebar(props: Props) {
         {expanded && (
           <div className="project-list">
             {projectList.map((project) => (
-              <ProjectItem project={project} key={project.id} />
+              <ProjectItem
+                project={project}
+                key={project.id}
+                taskCount={taskCounts[project.name]}
+                isActivated={project === activatedTaskGroup}
+                onClickProject={() => onActivateTaskGroup(project)}
+              />
             ))}
           </div>
         )}

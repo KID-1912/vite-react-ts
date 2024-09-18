@@ -76,3 +76,31 @@ export const doneTaskDoc = async (data: { task: Task; taskGroup: TaskGroup; user
   const col = collection(db, path).withConverter(TaskConverter);
   await setDoc(doc(col, task.id), { ...task, done: true });
 };
+
+// 查询任务数量
+export const getTaskDocsCountByGroup = async (data: {
+  taskGroup: TaskGroup;
+  userId: string;
+}): Promise<number> => {
+  const { taskGroup, userId } = data;
+  if (["inbox", "project"].includes(taskGroup.__type)) {
+    const path = getTasksCollectionPath(taskGroup, userId);
+    const col = collection(db, path);
+    const querySnapshot = await getDocs(query(col, where("done", "==", false)));
+    return querySnapshot.size; // 返回文档数量
+  }
+  if (["today", "recent"].includes(taskGroup.__type)) {
+    const col = collectionGroup(db, "tasks");
+    const op = taskGroup.__type === "today" ? "<=" : ">=";
+    const querySnapshot = await getDocs(
+      query(
+        col,
+        where("userId", "==", userId),
+        where("done", "==", false),
+        where("scheduledAt", op, new Date()),
+      ),
+    );
+    return querySnapshot.size; // 返回文档数量
+  }
+  return 0;
+};

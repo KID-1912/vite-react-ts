@@ -10,6 +10,7 @@ declare global {
   const AntdDeleteOutlined: typeof import('~icons/ant-design/delete-outlined.jsx')['default']
   const AntdDownOutlined: typeof import('~icons/ant-design/down-outlined.jsx')['default']
   const AntdEditOutlined: typeof import('~icons/ant-design/edit-outlined.jsx')['default']
+  const AntdEllipsisOutlined: typeof import('~icons/ant-design/ellipsis-outlined.jsx')['default']
   const AntdInboxOutlined: typeof import('~icons/ant-design/inbox-outlined.jsx')['default']
   const AntdLoadingOutlined: typeof import('~icons/ant-design/loading-outlined.jsx')['default']
   const AntdPlusCircleFilled: typeof import('~icons/ant-design/plus-circle-filled.jsx')['default']

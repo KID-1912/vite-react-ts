@@ -1,13 +1,18 @@
-import { Layout, Skeleton } from "antd";
+import { Layout, Skeleton, Dropdown, type MenuProps } from "antd";
 import LayoutIndex from "@/layouts/layout.tsx";
 import Sidebar from "./components/Sidebar/Sidebar.tsx";
 import TaskItem from "./components/TaskItem/TaskItem.tsx";
 import AddTaskItem from "./components/AddTaskItem/AddTaskItem.tsx";
+import DeleteTaskModal from "./components/DeleteTaskModal/DeleteTaskModal.tsx";
+import DeleteProjectModal from "./components/DeleteProjectModal/DeleteProjectModal.tsx";
 import EditTaskItem from "./components/EditTaskItem/EditTaskItem.tsx";
+import EditProjectModal from "./components/EditProjectModal/EditProjectModal.tsx";
+import styles from "./home.module.scss";
 import { UserContext } from "@/context/user.tsx";
-import { deleteTaskDoc, doneTaskDoc } from "@/api/tasks/tasks.ts";
+import { ProjectListContext } from "@/context/project.tsx";
+import { doneTaskDoc } from "@/api/tasks/tasks.ts";
 import { useTasks } from "./hooks/useTasks.tsx";
-import { INBOX, TASK_GROUP_NAME_MAP } from "@/constants/TASK_GROUP.ts";
+import { INBOX, TODAY_FILTER, TASK_GROUP_NAME_MAP } from "@/constants/TASK_GROUP.ts";
 
 export default function Home() {
   const { user } = useContext(UserContext);
@@ -16,6 +21,13 @@ export default function Home() {
   // taskGroup类别
   const defaultTaskGroup: TaskGroup = INBOX;
   const [activatedTaskGroup, setActivatedTaskGroup] = useState<TaskGroup>(defaultTaskGroup);
+  const activatedTaskGroupTitle = useMemo(() => {
+    if (activatedTaskGroup.__type === "project") {
+      return activatedTaskGroup.name;
+    } else {
+      return TASK_GROUP_NAME_MAP.get(activatedTaskGroup.name);
+    }
+  }, [activatedTaskGroup]);
 
   // 当前操作task
   const currentTask = useRef<Task | null>(null);
@@ -29,31 +41,6 @@ export default function Home() {
     }
     setIsEditTask(true);
     currentTask.current = task;
-  };
-
-  // 删除任务
-  const [deleteLoading, setDeleteLoading] = useState(false);
-  const [deleteTaskModalOpen, setDeleteTaskModalOpen] = useState(false);
-  const openDeleteTaskModal = (task: Task) => {
-    currentTask.current = task;
-    setDeleteTaskModalOpen(true);
-  };
-  const handleDeleteTask = async () => {
-    setDeleteLoading(true);
-    try {
-      const params = {
-        task: currentTask.current as Task,
-        taskGroup: activatedTaskGroup,
-        userId: user!.uid,
-      };
-      await deleteTaskDoc(params);
-      getTaskList();
-    } catch (error) {
-      console.warn(error);
-      message.error("操作失败，请稍后再试");
-    }
-    setDeleteLoading(false);
-    setDeleteTaskModalOpen(false);
   };
 
   // 完成任务
@@ -75,6 +62,13 @@ export default function Home() {
       console.warn(error);
       message.error("操作失败，请稍后重试");
     }
+  };
+
+  // 删除任务
+  const [deleteTaskModalOpen, setDeleteTaskModalOpen] = useState(false);
+  const openDeleteTaskModal = (task: Task) => {
+    currentTask.current = task;
+    setDeleteTaskModalOpen(true);
   };
 
   // 任务列表
@@ -102,16 +96,61 @@ export default function Home() {
     );
   });
 
+  // 项目操作
+  const { getProjectList } = useContext(ProjectListContext);
+  const projectOperateItem: MenuProps["items"] = [
+    {
+      key: "edit",
+      label: (
+        <div className="flex items-center">
+          <AntdEditOutlined className="mr-4px"></AntdEditOutlined>编辑项目
+        </div>
+      ),
+    },
+    {
+      key: "delete",
+      label: (
+        <div className="flex items-center">
+          <AntdDeleteOutlined className="mr-4px"></AntdDeleteOutlined>删除项目
+        </div>
+      ),
+    },
+  ];
+  const onClickDropdownItem: MenuProps["onClick"] = (menuItem) => {
+    if (menuItem.key === "delete") setDeleteProjectModalOpen(true);
+    if (menuItem.key === "edit") setEditProjectModalOpen(true);
+  };
+
+  // 删除项目弹窗
+  const [deleteProjectModalOpen, setDeleteProjectModalOpen] = useState(false);
+  const onDeletedProject = () => {
+    setActivatedTaskGroup(TODAY_FILTER);
+    getProjectList();
+  };
+
+  // 编辑项目弹窗
+  const [editProjectModalOpen, setEditProjectModalOpen] = useState(false);
 
   return (
     <>
       <LayoutIndex>
         <Sidebar
           activatedTaskGroup={activatedTaskGroup}
+          taskList={taskList}
           onActivateTaskGroup={setActivatedTaskGroup}
         />
-        <Layout.Content className="p-30px bg-white ml-200px min-h-full">
-          <div className="text-26px">{TASK_GROUP_NAME_MAP.get(activatedTaskGroup.name)}</div>
+        <Layout.Content className={styles["home-content"]}>
+          <div className="header">
+            {activatedTaskGroupTitle}
+            {activatedTaskGroup.__type === "project" && (
+              <Dropdown
+                menu={{ items: projectOperateItem, onClick: onClickDropdownItem }}
+                placement="bottomRight"
+              >
+                <AntdEllipsisOutlined className="icon-more" />
+              </Dropdown>
+            )}
+          </div>
           <div className="mt-24px">
             {loading ? <Skeleton active /> : TaskList}
             <AddTaskItem
@@ -122,22 +161,25 @@ export default function Home() {
           </div>
         </Layout.Content>
       </LayoutIndex>
-      <Modal
+      <DeleteTaskModal
         open={deleteTaskModalOpen}
-        onOk={handleDeleteTask}
-        confirmLoading={deleteLoading}
-        onCancel={() => setDeleteTaskModalOpen(false)}
-        maskClosable={false}
-        okText="删除"
-      >
-        {currentTask.current && (
-          <p className="py-12px">
-            你确定要删除
-            <span className="text-[var(--ant-color-primary)]">【{currentTask.current!.name}】</span>
-            ？
-          </p>
-        )}
-      </Modal>
+        setOpen={setDeleteTaskModalOpen}
+        task={currentTask.current!}
+        taskGroup={activatedTaskGroup}
+        onDeletedTask={getTaskList}
+      />
+      <DeleteProjectModal
+        open={deleteProjectModalOpen}
+        setOpen={setDeleteProjectModalOpen}
+        project={activatedTaskGroup as Project}
+        onDeletedProject={onDeletedProject}
+      />
+      <EditProjectModal
+        open={editProjectModalOpen}
+        setOpen={setEditProjectModalOpen}
+        project={activatedTaskGroup as Project}
+        onEditedProject={getProjectList}
+      />
     </>
   );
 }
