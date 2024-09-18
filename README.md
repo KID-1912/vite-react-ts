@@ -29,7 +29,7 @@ AntDesign.md Form useForm获取状态 Select label自定义
 
 eslint.md
 
-vite.md react svg支持
+vite.md
 
 ## Relation
 

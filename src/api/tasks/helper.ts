@@ -16,6 +16,7 @@ export const TaskConverter: FirestoreDataConverter<Task> = {
       userId: task.userId,
       done: task.done,
       name: task.name,
+      description: task.description,
       scheduledAt: task.scheduledAt ? Timestamp.fromDate(task.scheduledAt as Date) : null,
       createdAt: task.createdAt ? Timestamp.fromDate(task.createdAt as Date) : serverTimestamp(),
     };

@@ -12,6 +12,12 @@
   height: 44px;
   background: #db4c3e;
   z-index: 100;
+  :global {
+    .icon-logo{
+      color: #fff;
+      font-size: 24px;
+    }
+  }
 }
 
 .layout-main {

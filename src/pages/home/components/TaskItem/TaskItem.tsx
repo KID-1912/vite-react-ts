@@ -26,9 +26,10 @@ export default function TaskItem({ task, onEditTask, onDeleteTask, onCheckTask }
             </div>
           </div>
         </div>
+        {task.description && <div className="text-12px text-[#666] mt-8px">{task.description}</div>}
         {task.scheduledAt && (
           <div
-            className="flex items-center mt-6px text-12px"
+            className="flex items-center mt-8px text-12px"
             style={{ color: calcScheduledColor(task.scheduledAt) }}
           >
             <AntdCalendarOutlined className="mr-4px" />

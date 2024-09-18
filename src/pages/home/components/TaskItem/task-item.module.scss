@@ -1,8 +1,8 @@
 .task-item {
   display: flex;
   padding: 12px 0 10px;
+  line-height: 1;
   border-bottom: 1px solid #eee;
-  cursor: pointer;
   .task-checkbox {
     display: flex;
     justify-content: center;
@@ -13,6 +13,7 @@
     font-size: 12px;
     border-radius: 50%;
     border: 1px solid #999;
+    cursor: pointer;
     .icon-checked {
       opacity: 0;
     }
@@ -27,6 +28,7 @@
     font-size: 20px;
     border-radius: 2px;
     opacity: 0;
+    cursor: pointer;
     & + .action-item {
       margin-left: 12px;
     }
