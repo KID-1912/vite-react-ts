@@ -26,8 +26,8 @@ export const ProjectListProvider = ({ children }: { children: React.ReactNode })
     }
   };
   useEffect(() => {
+    if (!user) return;
     isMounted.current = true;
-    if (loading === true) return;
     getProjectList();
     return () => {
       isMounted.current = false;

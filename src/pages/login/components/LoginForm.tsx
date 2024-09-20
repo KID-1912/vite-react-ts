@@ -21,7 +21,7 @@ export default function LoginForm() {
     try {
       await signInWithEmailAndPassword(firebaseAuth, email, password);
       navigate("/");
-      message.error("登录成功");
+      message.success("登录成功");
     } catch (error) {
       message.error("登录失败");
       console.warn("登录失败", error);

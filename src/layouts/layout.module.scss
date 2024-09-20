@@ -27,6 +27,17 @@
         cursor: pointer;
       }
     }
+    .sign-out {
+      position: absolute;
+      top: 50%;
+      right: 24px;
+      color: #fff;
+      transform: translateY(-50%);
+      cursor: pointer;
+      &:hover {
+        text-decoration: 1px underline currentColor;
+      }
+    }
   }
 }
 

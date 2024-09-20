@@ -13,7 +13,7 @@ type Props = {
   onAddTaskSuccess?: () => void | Promise<void>;
 };
 
-const AddTaskModal: React.FC<Props> = (props) => {
+export default function AddTaskModal(props: Props) {
   const { message } = App.useApp();
   const { user } = useContext(UserContext);
   const { open, setOpen, taskGroup } = props;
@@ -118,6 +118,4 @@ const AddTaskModal: React.FC<Props> = (props) => {
       </Form>
     </Modal>
   );
-};
-
-export default AddTaskModal;
+}

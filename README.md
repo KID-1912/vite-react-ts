@@ -23,7 +23,7 @@
 
 TypeScript.md
 
-React.md
+React.md react 类型使用，组件声明规范间接声明Props
 
 AntDesign.md Form useForm获取状态 Select label自定义
 
@@ -165,11 +165,11 @@ project 选中并添加任务，任务数回显 √
 
 project 删除与编辑 √
 
-补充描述 √，logo √,快速添加 √，退出登录
+补充描述 √，logo √,快速添加 √，退出登录 √
 
 统一主题色
 
-注册新账号，任务独立
+注册新账号（邮箱验证），任务独立
 
 ### firebase
 
