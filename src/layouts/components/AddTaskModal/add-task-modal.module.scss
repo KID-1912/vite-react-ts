@@ -1,0 +1,9 @@
+.add-task-form {
+  :global(.ant-form-item) {
+    --ant-form-item-margin-bottom: 0px;
+    :global(.ant-input) {
+      --ant-input-padding-block: 0px;
+      --ant-input-padding-inline: 4px;
+    }
+  }
+}

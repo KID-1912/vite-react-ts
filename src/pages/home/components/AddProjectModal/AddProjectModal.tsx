@@ -19,7 +19,7 @@ export default function AddProjectModal(props: Props) {
 
   type AddProjectFieldType = { name: string; color: string };
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
   const handleSubmit = async () => {
     const values: AddProjectFieldType = form.getFieldsValue();
     const newProject: NewProject = {
@@ -28,7 +28,7 @@ export default function AddProjectModal(props: Props) {
       name: values.name,
       color: values.color,
     };
-    setLoading(true);
+    setConfirmLoading(true);
     try {
       await addProjectDoc({ project: newProject, userId: user!.uid });
       onAddedProject();
@@ -37,7 +37,7 @@ export default function AddProjectModal(props: Props) {
       console.log(error);
       message.error("操作失败");
     }
-    setLoading(false);
+    setConfirmLoading(false);
   };
 
   const [isOkBtnDisabled, setIsOkBtnDisabled] = useState(true);
@@ -54,8 +54,10 @@ export default function AddProjectModal(props: Props) {
       className="px-12px"
       maskClosable={false}
       okText="添加"
-      okButtonProps={{ loading, disabled: isOkBtnDisabled }}
+      confirmLoading={confirmLoading}
+      okButtonProps={{ disabled: isOkBtnDisabled }}
       onOk={handleSubmit}
+      afterClose={form.resetFields}
     >
       <Form
         form={form}

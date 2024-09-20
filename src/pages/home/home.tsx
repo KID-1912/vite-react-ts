@@ -13,6 +13,7 @@ import { ProjectListContext } from "@/context/project.tsx";
 import { doneTaskDoc } from "@/api/tasks/tasks.ts";
 import { useTasks } from "./hooks/useTasks.tsx";
 import { INBOX, TODAY_FILTER, TASK_GROUP_NAME_MAP } from "@/constants/TASK_GROUP.ts";
+import emitter from "@/utils/emitter.ts";
 
 export default function Home() {
   const { user } = useContext(UserContext);
@@ -31,6 +32,17 @@ export default function Home() {
 
   // 当前操作task
   const currentTask = useRef<Task | null>(null);
+
+  // 新增任务
+  const onAddTaskModalSuccess = (data: { newTask: NewTask; taskGroup: TaskGroup }) => {
+    const { taskGroup } = data;
+    if (activatedTaskGroup === taskGroup) {
+      getTaskList();
+    } else {
+      setActivatedTaskGroup(taskGroup);
+    }
+  };
+  emitter.on("addTaskModal:addTaskSuccess", onAddTaskModalSuccess);
 
   // 编辑任务
   const [isEditTask, setIsEditTask] = useState(false);
