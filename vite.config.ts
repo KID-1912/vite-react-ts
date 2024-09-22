@@ -14,7 +14,7 @@ import { visualizer } from "rollup-plugin-visualizer";
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   return {
-    base: env.VITE_BASE_URL,
+    // base: env.VITE_BASE_URL,
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "src"),
@@ -60,14 +60,14 @@ export default defineConfig(({ mode }) => {
           data: { build_time: new Date().toLocaleString() },
         },
       }),
-      visualizer({ open: true, filename: "dist/stats.html" }),
+      visualizer({ open: false, filename: "dist/stats.html" }),
     ],
     server: {
       host: true,
       port: 5173,
-      proxy: {
-        "/": env.VITE_API_BASE_URL,
-      },
+      // proxy: {
+      //   "/": env.VITE_API_BASE_URL,
+      // },
     },
     build: {
       outDir: "dist",

@@ -1,6 +1,8 @@
+import LoadingLayer from "@/components/base/LoadingLayer.tsx";
+
 const lazyLoad = (Component: React.LazyExoticComponent<any>) => {
   return (
-    <Suspense>
+    <Suspense fallback={<LoadingLayer />}>
       <Component />
     </Suspense>
   );

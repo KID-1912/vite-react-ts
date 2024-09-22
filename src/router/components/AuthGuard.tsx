@@ -5,6 +5,5 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const { user, loading } = useContext(UserContext);
   if (loading) return <LoadingLayer />;
   if (!user) return <Navigate to="/login" replace />;
-  console.log("AuthGuard render");
   return children;
 }

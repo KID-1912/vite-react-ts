@@ -12,7 +12,7 @@ export const ProjectListContext = createContext<ProjectListContext>({
 });
 
 export const ProjectListProvider = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [projectList, setProjectList] = useState<Project[]>([]);
 
   const isMounted = useRef(true);
@@ -32,7 +32,7 @@ export const ProjectListProvider = ({ children }: { children: React.ReactNode })
     return () => {
       isMounted.current = false;
     };
-  }, [loading]);
+  }, [user]);
 
   return (
     <ProjectListContext.Provider value={{ projectList, getProjectList }}>

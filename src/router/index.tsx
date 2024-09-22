@@ -8,6 +8,10 @@ const LoginRoute: RouteObject = {
   path: "/login",
   element: lazyLoad(lazy(() => import("@/pages/login/login.tsx"))),
 };
+const RegisterRoute: RouteObject = {
+  path: "/register",
+  element: lazyLoad(lazy(() => import("@/pages/register/register.tsx"))),
+};
 
 const adminRoutes: RouteObject = {
   path: "/",
@@ -31,7 +35,7 @@ const PAGE_NOT_FOUND_ROUTE: RouteObject = {
 };
 
 export default function Router() {
-  const routes: RouteObject[] = [adminRoutes, LoginRoute, PAGE_NOT_FOUND_ROUTE];
+  const routes: RouteObject[] = [adminRoutes, LoginRoute, RegisterRoute, PAGE_NOT_FOUND_ROUTE];
   const router = createHashRouter(routes);
 
   return <RouterProvider router={router} />;

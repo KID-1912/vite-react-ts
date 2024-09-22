@@ -1,8 +1,11 @@
 import LoginForm from "./components/LoginForm.tsx";
 import styles from "./login.module.scss";
+import { useValidateURLAuth } from "./hooks/useValidateURLAuth.ts";
+
 import { Typography } from "antd";
 
 export default function Login() {
+  useValidateURLAuth(); // 邮箱验证链接
   return (
     <div className={styles["login-page"]}>
       <div className="flex items-center self-center">

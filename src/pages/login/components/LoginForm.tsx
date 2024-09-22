@@ -10,10 +10,6 @@ export default function LoginForm() {
   const [loading, setLoading] = useState(false);
   const { message } = App.useApp();
   const navigate = useNavigate();
-  const initialLoginValues: LoginFieldType = {
-    email: "example@example.com",
-    password: "testtest",
-  };
 
   const handleFinish = async (values: LoginFieldType) => {
     const { email, password } = values;
@@ -30,17 +26,11 @@ export default function LoginForm() {
   };
   return (
     <>
-      <Form
-        name="login"
-        className="w-400px"
-        size="large"
-        initialValues={initialLoginValues}
-        onFinish={handleFinish}
-      >
-        <Form.Item name="email">
+      <Form name="login" className="w-400px" size="large" onFinish={handleFinish}>
+        <Form.Item name="email" rules={[{ required: true, message: "" }]}>
           <Input placeholder="输入您的电子邮箱..." className="h-50px"></Input>
         </Form.Item>
-        <Form.Item name="password">
+        <Form.Item name="password" rules={[{ required: true, message: "" }]}>
           <Input type="password" placeholder="输入您的密码..." className="h-50px"></Input>
         </Form.Item>
         <Form.Item>
@@ -49,6 +39,12 @@ export default function LoginForm() {
           </Button>
         </Form.Item>
       </Form>
+      <div
+        className="text-[#c0c0c0] text-center underline cursor-pointer"
+        onClick={() => navigate("/register")}
+      >
+        我有邮箱，去注册
+      </div>
     </>
   );
 }

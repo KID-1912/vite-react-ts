@@ -1,3 +1,5 @@
+@use "@/assets/styles/variable.scss" as *;
+
 .add-task-form {
   border-radius: 8px;
   border: 1px solid #e6e6e6;
@@ -25,7 +27,7 @@
   color: #808080;
   cursor: pointer;
   &:hover {
-    color: #dc4c3e;
+    color: $primaryColor;
   }
 
   .icon-plus-outline {
