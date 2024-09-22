@@ -1,4 +1,4 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, isSignInWithEmailLink } from "firebase/auth";
 import { firebaseAuth } from "@/firebase.ts";
 
 interface LoginFieldType {
@@ -10,13 +10,18 @@ export default function LoginForm() {
   const [loading, setLoading] = useState(false);
   const { message } = App.useApp();
   const navigate = useNavigate();
+  const isAccessWithEmailLink = isSignInWithEmailLink(firebaseAuth, location.href);
+  const initialLoginValues: LoginFieldType = {
+    email: isAccessWithEmailLink ? "" : "example@example.com",
+    password: isAccessWithEmailLink ? "" : "testtest",
+  };
 
   const handleFinish = async (values: LoginFieldType) => {
     const { email, password } = values;
     setLoading(true);
     try {
       await signInWithEmailAndPassword(firebaseAuth, email, password);
-      navigate("/");
+      navigate("/", { replace: true });
       message.success("登录成功");
     } catch (error) {
       message.error("登录失败");
@@ -26,7 +31,13 @@ export default function LoginForm() {
   };
   return (
     <>
-      <Form name="login" className="w-400px" size="large" onFinish={handleFinish}>
+      <Form
+        name="login"
+        className="w-400px"
+        size="large"
+        initialValues={initialLoginValues}
+        onFinish={handleFinish}
+      >
         <Form.Item name="email" rules={[{ required: true, message: "" }]}>
           <Input placeholder="输入您的电子邮箱..." className="h-50px"></Input>
         </Form.Item>
