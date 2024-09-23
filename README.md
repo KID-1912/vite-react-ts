@@ -193,5 +193,3 @@ set HTTPS_PROXY=http://127.0.0.1:7890
 4. nodejs项目安装 `firebase` npm包
 
 5. 一键复制firebase配置，作为nodejs项目的 `src/firebase.ts` 文件
-
-6. 运行项目，设置索引(哪来的？)
