@@ -475,10 +475,26 @@ export const doneTaskDoc = async (data: { task: Task; taskGroup: TaskGroup; user
 
 [`src/pages/home/components/AddProjectModal/AddProjectModal.tsx`](https://github.com/KID-1912/todolist-react/blob/main/src/pages/home/components/AddProjectModal/AddProjectModal.tsx)：新增 project 弹窗
 
-## 注册
+## Authentication注册
+
+### 邮箱链接认证
+
+**Firebase Authentication**官方无强制的标准注册流程；**Authentication**更多关注身份验证
+
+包括：[邮箱+密码验证](https://firebase.google.com/docs/auth/web/password-auth?hl=zh-cn)、[电子邮箱链接验证](https://firebase.google.com/docs/auth/web/email-link-auth?hl=zh-cn)、其它平台账号验证([Google](https://firebase.google.com/docs/auth/web/google-signin?hl=zh-cn)、[Facebook](https://firebase.google.com/docs/auth/web/facebook-login?hl=zh-cn)、[Github](https://firebase.google.com/docs/auth/web/github-auth?hl=zh-cn)、[Apple](https://firebase.google.com/docs/auth/web/apple?hl=zh-cn) ....)、[电话号码身份验证](https://firebase.google.com/docs/auth/web/phone-auth?hl=zh-cn)、[接入自定义身份验证系统](https://firebase.google.com/docs/auth/web/custom-auth?hl=zh-cn) ....
+
+其中【电子邮箱链接验证】：Authentication根据传入的邮箱值(如aa@emial.com)生成并发送验证链接，任何设备通过该链接进入应用后，应用只需提供生成链接时传入的邮箱(即aa@email.com)，即可获取用户状态（若为新用户，则新增为无密码新用户）；
+
+## 实现
+
+我们思考通过**电子邮箱链接验证相关API**(signInWithEmailLink) + **更新用户密码API**(updatePassword)实现自定义的注册流程
+
+**注册页**
+
+在开发项目新增注册页 [`src/pages/register/register.tsx`](https://github.com/KID-1912/todolist-react/blob/main/src/pages/register/register.tsx)，其中编写一个使用邮箱+密码的登录表单 [`RegisterForm.tsx`](https://github.com/KID-1912/todolist-react/blob/main/src/pages/register/components/RegisterForm.tsx)；
+
+
 
 部署实现
 
 项目迁移
-
-
