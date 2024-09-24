@@ -88,7 +88,7 @@ export const firebaseAuth = getAuth(firebaseApp);
 
 ## Authentication登录
 
-在开发项目新增登录页 [`src/pages/login/login.tsx`](https://github.com/KID-1912/todolist-react/blob/main/src/pages/login/login.tsx)，编写一个使用邮箱+密码的登录表单 [`LoginForm.tsx`](https://github.com/KID-1912/todolist-react/blob/main/src/pages/login/components/LoginForm.tsx)；
+在开发项目新增登录页 [`src/pages/login/login.tsx`](https://github.com/KID-1912/todolist-react/blob/main/src/pages/login/login.tsx)，编写一个填写邮箱+密码的登录表单 [`LoginForm.tsx`](https://github.com/KID-1912/todolist-react/blob/main/src/pages/login/components/LoginForm.tsx)；
 
 firebase 登录核心逻辑：
 
@@ -177,7 +177,7 @@ export const useAuthState = (): UserState => {
 
 回到【用户】新增用户：example@example.com 密码：testtest
 
-![](C:\Users\heyut\AppData\Roaming\marktext\images\2024-09-22-23-30-41-image.png)
+![](https://raw.githubusercontent.com/KID-1912/Github-PicGo-Images/master/202409250032512.png)
 
 完成所有步骤，就可以在开发项目的登录页，输入初始用户邮箱和密码，测试登录功能；
 
@@ -485,16 +485,120 @@ export const doneTaskDoc = async (data: { task: Task; taskGroup: TaskGroup; user
 
 其中【电子邮箱链接验证】：Authentication根据传入的邮箱值(如aa@emial.com)生成并发送验证链接，任何设备通过该链接进入应用后，应用只需提供生成链接时传入的邮箱(即aa@email.com)，即可获取用户状态（若为新用户，则新增为无密码新用户）；
 
+使用【电子邮箱链接验证】API前，需确保前面在开启 **Firebase Authentication** 时勾选了【电子邮件链接（无密码登录）】；或者可以在控制台依次【Authentication】—【登录方法】—【登录提供方】—【编辑/修改配置图标】检查是否开启，如下图所示：
+
+![](https://raw.githubusercontent.com/KID-1912/Github-PicGo-Images/master/202409250004985.png)
+
+更多相关细节见firebase文档：[firebase.google.com/docs/auth/web/email-link-auth?hl=zh-cn#enable_email_link_sign-in_for_your_firebase_project](https://firebase.google.com/docs/auth/web/email-link-auth?hl=zh-cn#enable_email_link_sign-in_for_your_firebase_project) 
+
 ## 实现
 
 我们思考通过**电子邮箱链接验证相关API**(signInWithEmailLink) + **更新用户密码API**(updatePassword)实现自定义的注册流程
 
+### 发送验证链接
+
 **注册页**
 
-在开发项目新增注册页 [`src/pages/register/register.tsx`](https://github.com/KID-1912/todolist-react/blob/main/src/pages/register/register.tsx)，其中编写一个使用邮箱+密码的登录表单 [`RegisterForm.tsx`](https://github.com/KID-1912/todolist-react/blob/main/src/pages/register/components/RegisterForm.tsx)；
+在开发项目新增注册页 [`src/pages/register/register.tsx`](https://github.com/KID-1912/todolist-react/blob/main/src/pages/register/register.tsx)，其中编写一个填写邮箱+密码的注册表单 [`RegisterForm.tsx`](https://github.com/KID-1912/todolist-react/blob/main/src/pages/register/components/RegisterForm.tsx)；
 
+点击**注册按钮**调用 `signInWithEmailLink` 发送验证链接：
 
+```ts
+  import { sendSignInLinkToEmail } from "firebase/auth";
+  import { firebaseAuth } from "@/firebase.ts";
 
-部署实现
+  interface RegisterFieldType {
+    email: string;
+    password: string;
+  }
 
-项目迁移
+  // 电子邮箱链接验证
+  const [sendEmail, setSendEmail] = useState(false);
+  const handleFinish = async (values: RegisterFieldType) => {
+    const { email, password } = values;
+    setLoading(true);
+    const actionCodeSettings = {
+      url: `${location.origin}?eml=${email}&pwd=${password}#/login`,
+      handleCodeInApp: true,
+    };
+    try {
+      // 向用户填写的邮箱发送验证链接
+      await sendSignInLinkToEmail(firebaseAuth, email, actionCodeSettings);
+      message.success({
+        content: "验证链接已发送至邮箱，请验证后去登录",
+        duration: 5,
+      });
+      setSendEmail(true);
+    } catch (error) {
+      message.error("邮箱验证链接发送失败，请稍后再试");
+      console.warn("邮箱验证链接发送失败", error);
+    }
+    setLoading(false);
+  };
+```
+
+`signInWithEmailLink` 接收3个参数，其中关键的第3个参数 `actionCodeSettings`，其url值即要嵌入的深层链接，用户在邮箱点击验证链接后将重定向该地址；我们通过拼接查询字符串传递注册信息，包含邮箱和密码；
+
+**注意**：配置的深层链接的域名，必须在 Firebase 控制台的“已获授权的网域”列表中。其中默认已包含localhost，即支持访问本地应用服务，默认值如：
+
+![](https://raw.githubusercontent.com/KID-1912/Github-PicGo-Images/master/202409250008724.png)
+
+### 设置密码
+
+当用户访问了firebase发送的验证身份链接，将跳转到 `actionCodeSettings.url` 配置的todolist应用的登录页；我们再编写一个邮箱验证链接进入时，验证身份并更新密码的逻辑：
+
+[src/pages/login/hooks/useValidateURLAuth.ts](https://github.com/KID-1912/todolist-react/blob/main/src/pages/login/hooks/useValidateURLAuth.ts)
+
+```ts
+import { isSignInWithEmailLink, signInWithEmailLink, updatePassword } from "firebase/auth";
+import { firebaseAuth } from "@/firebase.ts";
+
+export const useValidateURLAuth = () => {
+  const { message } = App.useApp();
+
+  // 尝试从浏览器URL解析出传递的状态
+  const URLObject: URL = new URL(location.href);
+  const emailParam: string | null = URLObject.searchParams.get("eml");
+  const passwordParam: string | null = URLObject.searchParams.get("pwd");
+  const signIn = async () => { 
+    // 如果当前进入登录页不是通过邮箱验证链接，不执行
+    if (isSignInWithEmailLink(firebaseAuth, location.href) === false) return;
+    if (emailParam && passwordParam) {
+      try {
+        // 验证身份，此时User状态将更新，成功通过邮箱验证链接登录
+        await signInWithEmailLink(firebaseAuth, emailParam, location.href);
+        // 设置User的密码为注册信息的password
+        await updatePassword(firebaseAuth.currentUser!, passwordParam);
+        message.success("邮箱验证通过，注册成功");
+      } catch (error) {
+        message.error("验证链接失败");
+        console.warn(error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    signIn();
+  }, []);
+};
+```
+
+```ts
+// 登录页 Login.tsx
+export default function Login() {
+  useValidateURLAuth(); // 邮箱验证链接 
+  // ......
+}
+```
+
+### 测试
+
+1. 本地pc运行项目 `npm run dev`，在注册页填写邮箱+密码点击【注册按钮】，将发送验证链接到邮箱
+
+2. pc或手机设备的邮箱收件箱中，复制邮件中验证链接的地址，在本地pc打开（要求支持科学上网），将重定向到 `localhost:5173/?code=xxx....eml=xxx&pwd=xxx#/login`
+
+3. 登录页中 `useValidateURLAuth` 检测到邮箱验证链接访问，验证身份并设置用户密码；注册流程完成，以后用户即可通过邮箱+密码登录；
+
+## 部署实现
+
+## 项目迁移
