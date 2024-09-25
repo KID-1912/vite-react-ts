@@ -7,8 +7,6 @@
 **体验地址**：[todolist-react-f22cc.web.app](https://todolist-react-f22cc.web.app/)
 [todolist-react-f22cc.firebaseapp.com](https://todolist-react-f22cc.firebaseapp.com/)
 
-<br/>
-
 [![](https://raw.githubusercontent.com/KID-1912/Github-PicGo-Images/master/2024/09/25/20240925185419.png)](https://todolist-react-f22cc.web.app)
 
 本项目是对 [Todoist](https://app.todoist.com/) （国外一款流行的任务管理应用：[todoist.com](https://todoist.com/zh-CN)）的简易功能版实现。
