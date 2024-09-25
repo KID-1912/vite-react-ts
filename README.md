@@ -1,7 +1,7 @@
 # todolist-react
 
 <h3 align="center">
-  TodoList Web应用 ———— 基于 Firebase 全栈的实现，使用 React + TypeScript 开发
+  TodoList Web应用 —— 基于 Firebase 全栈的实现，使用 React + TypeScript 开发
 </h3>
 
 **体验地址**：[todolist-react-f22cc.web.app](https://todolist-react-f22cc.web.app/)
