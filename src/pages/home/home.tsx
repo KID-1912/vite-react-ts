@@ -54,6 +54,10 @@ export default function Home() {
     setIsEditTask(true);
     currentTask.current = task;
   };
+  const onEditedProject = async (project: Project) => {
+    getProjectList();
+    setActivatedTaskGroup(project);
+  };
 
   // 完成任务
   const handleDoneTask = async (task: Task) => {
@@ -109,7 +113,7 @@ export default function Home() {
   });
 
   // 项目操作
-  const { getProjectList } = useContext(ProjectListContext);
+  const { projectList, getProjectList } = useContext(ProjectListContext);
   const projectOperateItem: MenuProps["items"] = [
     {
       key: "edit",
@@ -190,7 +194,7 @@ export default function Home() {
         open={editProjectModalOpen}
         setOpen={setEditProjectModalOpen}
         project={activatedTaskGroup as Project}
-        onEditedProject={getProjectList}
+        onEditedProject={onEditedProject}
       />
     </>
   );

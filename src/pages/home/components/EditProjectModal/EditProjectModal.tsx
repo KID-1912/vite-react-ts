@@ -8,7 +8,7 @@ type Props = {
   open: boolean;
   setOpen: (arg: boolean) => void;
   project: Project;
-  onEditedProject: () => void;
+  onEditedProject: (project: Project) => void;
 };
 
 export default function EditProjectModal(props: Props) {
@@ -17,6 +17,9 @@ export default function EditProjectModal(props: Props) {
 
   const { open, setOpen, project, onEditedProject } = props;
   const initialFormValues = { name: project.name, color: project.color };
+  useEffect(() => {
+    form.resetFields();
+  }, [open]);
 
   type editProjectFieldType = { name: string; color: string };
   const [form] = Form.useForm();
@@ -32,7 +35,7 @@ export default function EditProjectModal(props: Props) {
     setLoading(true);
     try {
       await editProjectDoc({ project: editProject, userId: user!.uid });
-      onEditedProject();
+      onEditedProject(editProject);
       setOpen(false);
     } catch (error) {
       console.log(error);
